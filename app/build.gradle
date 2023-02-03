@@ -1,0 +1,137 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android'
+}
+
+android {
+    namespace 'com.crewl.app'
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.crewl.app"
+        minSdk 25
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary true
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.4.0'
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+    kapt {
+        correctErrorTypes true
+    }
+}
+
+dependencies {
+    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
+    implementation 'androidx.activity:activity-compose:1.6.1'
+
+    /* Jetpack compose. */
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    implementation "androidx.compose.material:material:$compose_version"
+    implementation "androidx.compose.ui:ui-util:$compose_version"
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
+    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1"
+
+    def nav_compose_version = "2.5.3"
+    implementation "androidx.navigation:navigation-compose:$nav_compose_version"
+
+    def accompanist_version = "0.27.0"
+    /* Accompanist. */
+    implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
+    implementation "com.google.accompanist:accompanist-drawablepainter:$accompanist_version"
+
+    def coil_accompanist_version = "0.6.2"
+    /* Coil accompanist. */
+    implementation "dev.chrisbanes.accompanist:accompanist-coil:$coil_accompanist_version"
+    implementation "dev.chrisbanes.accompanist:accompanist-picasso:$coil_accompanist_version"
+    implementation "dev.chrisbanes.accompanist:accompanist-glide:$coil_accompanist_version"
+
+    /* Splash screen API. */
+    implementation "androidx.core:core-splashscreen:1.0.0"
+
+    /* Timber. */
+    implementation "com.jakewharton.timber:timber:5.0.1"
+
+    /* Room & Storage. */
+    implementation "androidx.room:room-ktx:2.5.0"
+    kapt "androidx.room:room-compiler:2.5.0"
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
+    implementation "androidx.datastore:datastore:1.0.0"
+    implementation "androidx.security:security-crypto-ktx:1.1.0-alpha04"
+
+    /* Coroutines. */
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
+
+    /* Dagger. */
+    implementation "com.google.dagger:hilt-android:2.44"
+    kapt "com.google.dagger:hilt-android-compiler:2.44"
+    implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
+
+    /* Firebase. */
+    implementation "com.google.android.gms:play-services-base:18.1.0"
+    implementation "com.google.firebase:firebase-analytics-ktx:21.2.0"
+    implementation "com.google.firebase:firebase-crashlytics-ktx:18.3.3"
+    implementation "com.google.firebase:firebase-messaging-ktx:23.1.1"
+    implementation "com.google.firebase:firebase-config-ktx:21.2.1"
+
+    /* Huawei. */
+    implementation "com.huawei.agconnect:agconnect-core:1.6.4.300"
+    implementation "com.huawei.hms:base:6.3.0.300"
+    implementation "com.huawei.hms:hianalytics:6.3.2.300"
+    implementation "com.huawei.agconnect:agconnect-crash:1.6.0.300"
+    implementation "com.huawei.hms:push:6.1.0.300"
+    implementation "com.huawei.agconnect:agconnect-remoteconfig:1.6.4.300"
+
+    /* Networking. */
+    implementation "com.squareup.moshi:moshi-kotlin:1.13.0"
+    implementation "com.serjltt.moshi:moshi-lazy-adapters:2.2"
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation "com.squareup.retrofit2:converter-moshi:2.9.0"
+    implementation "com.squareup.okhttp3:okhttp:5.0.0-alpha.5"
+    implementation "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.5"
+    debugImplementation "com.github.chuckerteam.chucker:library:3.5.2"
+    releaseImplementation "com.github.chuckerteam.chucker:library-no-op:3.5.2"
+
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0"
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+}
