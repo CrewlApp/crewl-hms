@@ -7,4 +7,15 @@
 
     <!-- Currently using system default -->
     <string name="pref_theme_default_value" translatable="false">@string/pref_theme_system_value</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_title_first">Etrafındaki etkinlikleri keşfet</string>
+    <string name="onboarding_title_second">Yeni insanlarla tanış ve rekabet et</string>
+    <string name="onboarding_title_third">Özel indirimler kazan ve farklı tatları dene</string>
+    <string name="onboarding_title_fourth">Unutulmayacak bir gece deneyimle</string>
+
+    <string name="onboarding_description_first">İnsanlar için etkinlik oluştur veya düzenlenen etkinliklere katıl.</string>
+    <string name="onboarding_description_second">Şehrindeki yeni insanları bul, etkinliklerde ekibini oluştur ve ödül kazan.</string>
+    <string name="onboarding_description_third">Gittiğin barların özel içeceklerini dene ve Crewl üyeliğine özel indirimlerin tadını çıkar.</string>
+    <string name="onboarding_description_fourth">Şimdi katıl ve hikayenin bir parçası ol. Seni aramızda görmek için sabırsızlanıyoruz.</string>
 </resources>
