@@ -12,21 +12,3 @@ sealed class OnboardingRouter(val route: String) {
     object Onboarding: OnboardingRouter(route = "onboarding_screen")
     object Empty: OnboardingRouter(route = "empty")
 }
-
-interface SplashScreenContract {
-    fun navigate()
-
-    fun redirectLogin()
-
-    fun redirectRegister()
-
-    fun redirectMessages()
-}
-
-/**
- * View - SplashScreen
- * ViewModel - SplashViewModel [Business Logic]
- * Router - SplashRouter
- */
-
-
