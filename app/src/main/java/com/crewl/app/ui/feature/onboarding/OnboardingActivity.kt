@@ -7,13 +7,17 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.lifecycleScope
+import com.crewl.app.ui.feature.onboarding.nav.OnboardingNavGraph
 import com.crewl.app.ui.provider.LanguageProvider
 import com.crewl.app.ui.theme.CrewlColors
 import com.crewl.app.ui.theme.CrewlTheme
 import com.crewl.app.utils.SetupSystemUi
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -38,6 +42,7 @@ private fun OnboardingRoot() {
             modifier = Modifier.fillMaxSize(),
             color = CrewlColors.background
         ) {
+            OnboardingNavGraph()
         }
     }
 }

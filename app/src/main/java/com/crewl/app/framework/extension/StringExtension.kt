@@ -5,9 +5,13 @@
 
 package com.crewl.app.framework.extension
 
+import android.content.res.Resources
 import android.os.Build
 import android.text.Html
 import android.text.Spanned
+import com.crewl.app.CrewlApplication
+import com.crewl.app.R
+import java.security.AccessController.getContext
 
 const val EMPTY = ""
 
@@ -52,4 +56,8 @@ fun String.clearTurkishChars(): String {
         )
     }
     return ret
+}
+
+fun getString(id: Int): String {
+    return CrewlApplication.getContext()?.getString(id) ?: ""
 }

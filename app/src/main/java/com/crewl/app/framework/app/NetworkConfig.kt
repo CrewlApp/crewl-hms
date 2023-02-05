@@ -10,5 +10,5 @@ abstract class NetworkConfig {
 
     abstract fun timeOut(): Long
 
-    open fun isDev() = false
+    open fun isDev() = true
 }
