@@ -1,7 +1,6 @@
-package com.crewl.app.ui.feature.onboarding.ui
+package com.crewl.app.data.model.onboarding
 
 import androidx.annotation.DrawableRes
-import androidx.compose.ui.res.stringResource
 import com.crewl.app.R
 import com.crewl.app.framework.extension.getString
 
