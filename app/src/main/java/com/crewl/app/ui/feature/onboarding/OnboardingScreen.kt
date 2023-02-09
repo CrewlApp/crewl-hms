@@ -1,4 +1,4 @@
-package com.crewl.app.ui.feature.onboarding.ui
+package com.crewl.app.ui.feature.onboarding
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -18,27 +18,33 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.crewl.app.R
 import com.crewl.app.data.model.onboarding.OnboardingItem
-import com.crewl.app.ui.component.TextButton
-import com.crewl.app.ui.feature.destinations.PreHomeScreenDestination
+import com.crewl.app.ui.component.AnimatedButton
+import com.crewl.app.ui.router.Screen
 import com.crewl.app.ui.theme.*
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootNavGraph
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
-@RootNavGraph(start = true)
-@Destination
 @Composable
-fun OnboardingScreen(viewModel: OnboardingViewModel = hiltViewModel(), navigator: DestinationsNavigator) {
+fun OnboardingScreen(navigator: NavHostController, viewModel: OnboardingViewModel = hiltViewModel()) {
     val context = LocalContext.current
 
-    val itemsOfOnboarding = viewModel.itemsOfOnboarding
+    val itemsOfOnboarding = viewModel.data.items
 
     val pagerState = rememberPagerState()
     val coroutinesScope = rememberCoroutineScope()
+
+    LaunchedEffect(key1 = context) {
+        viewModel.onboardingEvent.collect { event ->
+            when (event) {
+                is OnboardingEvent.Navigate -> {
+                    navigator.navigate(route = Screen.PreHomeScreen.route)
+                }
+            }
+        }
+    }
 
     Column(modifier = Modifier.fillMaxSize()) {
         HorizontalPager(
@@ -58,15 +64,12 @@ fun OnboardingScreen(viewModel: OnboardingViewModel = hiltViewModel(), navigator
                 .weight(0.15f)
                 .fillMaxWidth()
         ) {
-            TextButton(fraction = 0.75f, text = stringResource(id = R.string.continue_string)) {
+            AnimatedButton(fraction = 0.75f, text = stringResource(id = R.string.continue_string)) {
                 if (pagerState.currentPage + 1 < itemsOfOnboarding.size)
                     coroutinesScope.launch {
                         pagerState.animateScrollToPage(pagerState.currentPage + 1)
                     }
-                else {
-                    viewModel.saveOnboardingState(isCompleted = true)
-                    navigator.navigate(PreHomeScreenDestination())
-                }
+                else viewModel.saveOnboardingState(isCompleted = true)
             }
         }
     }
@@ -85,7 +88,9 @@ fun PagerScreen(onboardingItem: OnboardingItem) {
                 .fillMaxWidth(0.65f)
                 .padding(horizontal = 10.dp),
             text = onboardingItem.title,
+            fontFamily = SpaceGrotesk,
             fontSize = 24.sp,
+            color = Black,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center
         )
@@ -104,16 +109,18 @@ fun PagerScreen(onboardingItem: OnboardingItem) {
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 30.dp),
+                .padding(horizontal = 25.dp),
             text = onboardingItem.description,
-            fontSize = 17.sp,
+            fontFamily = SpaceGrotesk,
+            color = SubtitleColor,
+            fontSize = 16.sp,
+            letterSpacing = (-0.25).sp,
             fontWeight = FontWeight.Medium,
             textAlign = TextAlign.Center
         )
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 @Preview(showBackground = true, device = Devices.PIXEL_2_XL)
 fun PreviewButton() {

@@ -1,3 +1,9 @@
+/**
+ * @author Kaan Fırat
+ *
+ * @since 1.0
+ */
+
 package com.crewl.app.framework.base
 
 import androidx.lifecycle.ViewModel

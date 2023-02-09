@@ -1,4 +1,10 @@
-package com.alis.framework.usecase
+/**
+ * @author Kaan Fırat
+ *
+ * @since 1.0
+ */
+
+package com.crewl.app.framework.usecase
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.FlowCollector

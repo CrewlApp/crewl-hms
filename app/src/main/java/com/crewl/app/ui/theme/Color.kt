@@ -1,6 +1,7 @@
 package com.crewl.app.ui.theme
 
 import androidx.compose.ui.graphics.Color
+import com.crewl.app.ui.component.CrewlTextField
 
 val SoftPeach = Color(0xFFF4ECE8)
 val BrightGold = Color(0xFFFECB18)
@@ -29,3 +30,19 @@ val Gray700 = Color(0xFF616161)
 val Gray800 = Color(0xFF292929)
 val Gray900 = Color(0xFF212121)
 val Gray950 = Color(0xFF141414)
+
+/**
+ * Custom filled text field color values.
+ *
+ * @see CrewlTextField
+ */
+val BackgroundColor = White
+val TextColor = Black
+val SubtitleColor = CarbonGray
+val RoundedRectangleStroke = DividerLight
+val FocusedLabelColor = Color(0xFF49454F)
+val UnfocusedLabelColor = FocusedLabelColor
+val UnfocusedIndicatorColor = Color(0xFFDFDFDF)
+val FocusedIndicatorColor = BrightGold
+val PlaceholderColor = FocusedLabelColor
+val CursorColor = Black

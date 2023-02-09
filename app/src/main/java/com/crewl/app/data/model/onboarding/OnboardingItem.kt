@@ -1,3 +1,9 @@
+/**
+ * @author Kaan Fırat
+ *
+ * @since 1.0
+ */
+
 package com.crewl.app.data.model.onboarding
 
 import androidx.annotation.DrawableRes

@@ -1,7 +1,9 @@
 package com.crewl.app.ui.router
 
-import com.crewl.app.ui.feature.onboarding.OnboardingActivity
-
-object Screen {
-    val Onboarding: String = OnboardingActivity::class.java.name
+sealed class Screen(val route: String) {
+    object SplashScreen : Screen(route = Route.Splash)
+    object OnboardingScreen : Screen(route = Route.Onboarding)
+    object PreHomeScreen : Screen(route = Route.PreHome)
+    object LoginScreen : Screen(route = Route.Login)
+    object AuthenticationLoginScreen : Screen(route = Route.AuthenticationLogin)
 }

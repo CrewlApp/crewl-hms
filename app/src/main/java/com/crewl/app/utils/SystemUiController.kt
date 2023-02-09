@@ -6,10 +6,7 @@ import androidx.compose.ui.graphics.Color
 import com.google.accompanist.systemuicontroller.SystemUiController
 
 @Composable
-fun SetupSystemUi(
-    systemUiController: SystemUiController,
-    systemColor: Color
-) {
+fun SetupSystemUI(systemUiController: SystemUiController, systemColor: Color) {
     SideEffect {
         systemUiController.setSystemBarsColor(color = systemColor)
     }
