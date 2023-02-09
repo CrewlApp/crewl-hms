@@ -1,5 +1,6 @@
 package com.crewl.app.ui.component
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -13,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -31,7 +33,10 @@ import com.crewl.app.utils.rememberWindowInfo
 
 @ExperimentalMaterialApi
 @Composable
-fun PrivacyPolicyBottomSheet() {
+fun PrivacyPolicyBottomSheet(
+    painter: Painter,
+    text: String
+) {
     val windowInfo = rememberWindowInfo()
     val screenWidth = windowInfo.screenWidth
     val screenHeight = windowInfo.screenHeight
@@ -53,8 +58,8 @@ fun PrivacyPolicyBottomSheet() {
 
         Image(
             modifier = Modifier.padding(horizontal = 50.dp),
-            painter = painterResource(id = R.drawable.img_privacy_policy),
-            contentDescription = "Privacy Policy"
+            painter = painter,
+            contentDescription = text
         )
 
         Spacer(modifier = Modifier.height(10.dp))
@@ -62,7 +67,7 @@ fun PrivacyPolicyBottomSheet() {
         Text(
             modifier = Modifier
                 .padding(horizontal = 10.dp),
-            text = "Gizlilik Politikası",
+            text = text,
             fontFamily = SpaceGrotesk,
             fontSize = 24.sp,
             color = Black,
@@ -93,11 +98,4 @@ fun PrivacyPolicyBottomSheet() {
 
 
     }
-}
-
-@OptIn(ExperimentalMaterialApi::class)
-@Preview
-@Composable
-fun PreviewPrivacyPolicyBottomSheet() {
-    PrivacyPolicyBottomSheet()
 }

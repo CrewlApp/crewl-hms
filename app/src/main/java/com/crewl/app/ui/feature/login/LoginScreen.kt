@@ -1,6 +1,7 @@
 package com.crewl.app.ui.feature.login
 
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.VectorConverter
 import androidx.compose.foundation.Image
@@ -27,6 +28,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Yellow
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.boundsInParent
@@ -38,6 +40,7 @@ import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -72,8 +75,16 @@ fun LoginScreen(navigator: NavHostController, viewModel: LoginViewModel = hiltVi
     val focusRequester = remember { FocusRequester() }
     val coroutineScope = rememberCoroutineScope()
 
-    val sheetState = rememberBottomSheetState(initialValue = BottomSheetValue.Collapsed)
-    val scaffoldState = rememberBottomSheetScaffoldState(bottomSheetState = sheetState)
+    val skipHalfExpanded by remember { mutableStateOf(true) }
+
+    val sheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+        skipHalfExpanded = skipHalfExpanded
+    )
+    
+    val isPrivacyPolicyClicked = remember {
+        mutableStateOf(false)
+    }
 
     val phoneNumber by viewModel.phoneNumber
 
@@ -108,26 +119,28 @@ fun LoginScreen(navigator: NavHostController, viewModel: LoginViewModel = hiltVi
         onDispose {}
     }
 
-    BottomSheetScaffold(
-        scaffoldState = scaffoldState,
-        backgroundColor = SoftPeach,
-        sheetPeekHeight = 0.dp,
-        sheetBackgroundColor = White,
+    ModalBottomSheetLayout(
+        sheetState = sheetState,
+        scrimColor = Yellow,
+        sheetBackgroundColor = Color.Red,
         sheetShape = RoundedCornerShape(
             topStart = 20.dp,
             topEnd = 20.dp
         ),
         sheetContent = {
-            PrivacyPolicyBottomSheet()
-        },
+            if (!isPrivacyPolicyClicked.value)
+                PrivacyPolicyBottomSheet(painter = painterResource(id = R.drawable.img_terms_of_service), text = stringResource(id = R.string.terms_of_service))
+            else
+                PrivacyPolicyBottomSheet(painter = painterResource(id = R.drawable.img_privacy_policy), text = stringResource(id = R.string.privacy_policy))
+        }
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .clickable {
                     coroutineScope.launch {
-                        if (sheetState.isExpanded) {
-                            sheetState.collapse()
+                        if (sheetState.isVisible) {
+                            sheetState.hide()
                         }
                     }
                 }
@@ -235,13 +248,19 @@ fun LoginScreen(navigator: NavHostController, viewModel: LoginViewModel = hiltVi
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     keyboard?.let {
-                        PrivacyPolicyBox(sheetState, it)
+                        PrivacyPolicyBox(sheetState, it, isPrivacyPolicyClicked)
                     }
 
                     Spacer(modifier = Modifier.height(20.dp))
 
                     AnimatedButton(text = stringResource(id = R.string.continue_string))
                 }
+            }
+        }
+
+        BackHandler(enabled = sheetState.isVisible) {
+            coroutineScope.launch {
+                sheetState.hide()
             }
         }
     }
@@ -251,8 +270,9 @@ fun LoginScreen(navigator: NavHostController, viewModel: LoginViewModel = hiltVi
 @OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun PrivacyPolicyBox(
-    sheetState: BottomSheetState,
+    sheetState: ModalBottomSheetState,
     keyboard: SoftwareKeyboardController,
+    isPrivacyPolicyClicked: MutableState<Boolean>,
     onButtonClick: () -> Unit = {}
 ) {
     var buttonState by remember { mutableStateOf(ButtonState.Idle) }
@@ -344,7 +364,6 @@ fun PrivacyPolicyBox(
                 }
 
                 ClickableText(
-                    modifier = Modifier.padding(end = 5.dp),
                     text = annotatedText,
                     onClick = { offset ->
                         annotatedText.getStringAnnotations(
@@ -354,9 +373,10 @@ fun PrivacyPolicyBox(
                         ).firstOrNull()?.let {
                             coroutineScope.launch {
                                 keyboard.hide()
-                                delay(1000L)
-                                if (sheetState.isCollapsed) {
-                                    sheetState.expand()
+                                delay(700L)
+                                isPrivacyPolicyClicked.value = false
+                                if (!sheetState.isVisible) {
+                                    sheetState.show()
                                 }
                             }
                         }
@@ -368,17 +388,20 @@ fun PrivacyPolicyBox(
                         ).firstOrNull()?.let {
                             coroutineScope.launch {
                                 keyboard.hide()
-
+                                isPrivacyPolicyClicked.value = true
                                 delay(1000L)
-                                if (sheetState.isCollapsed) {
-                                    sheetState.expand()
+                                if (!sheetState.isVisible) {
+                                    sheetState.show()
                                 }
                             }
                         }
-                    }
+                    },
+                    style = TextStyle(
+                        lineHeight = 20.sp,
+                        fontSize = 13.sp
+                    )
                 )
             }
-
         }
 
         Row(
@@ -395,56 +418,4 @@ fun PrivacyPolicyBox(
                 .align(Alignment.BottomEnd)
         ) {}
     }
-}
-
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-fun AnnotatedClickableText() {
-
-    val sheetState = rememberBottomSheetState(initialValue = BottomSheetValue.Collapsed)
-    val scaffoldState = rememberBottomSheetScaffoldState(bottomSheetState = sheetState)
-
-    val annotatedText = buildAnnotatedString {
-        pushStringAnnotation(
-            tag = "termsOfService",// provide tag which will then be provided when you click the text
-            annotation = "termsOfService"
-        )
-        withStyle(style = SpanStyle(color = Black, fontWeight = FontWeight.Bold)) {
-            append("Kullanım Koşulları ")
-        }
-        pop()
-        withStyle(style = SpanStyle(color = SubtitleColor, fontWeight = FontWeight.Normal)) {
-            append("ve")
-        }
-        pushStringAnnotation(
-            tag = "privacyPolicy",// provide tag which will then be provided when you click the text
-            annotation = "privacyPolicy"
-        )
-        withStyle(style = SpanStyle(color = Black, fontWeight = FontWeight.Bold)) {
-            append(" Güvenlik Sözleşmesi")
-        }
-        pop()
-        withStyle(style = SpanStyle(color = SubtitleColor, fontWeight = FontWeight.Normal)) {
-            append("‘ni okudum ve kabul ediyorum.")
-        }
-    }
-
-    ClickableText(
-        text = annotatedText,
-        onClick = { offset ->
-            annotatedText.getStringAnnotations(
-                tag = "termsOfService",// tag which you used in the buildAnnotatedString
-                start = offset,
-                end = offset
-            )[0].let { annotation ->
-
-            }
-        }
-    )
-}
-
-@Preview
-@Composable
-fun PreviewLoginScreen() {
-
 }
