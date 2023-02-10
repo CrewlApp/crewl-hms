@@ -22,7 +22,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
@@ -44,15 +43,16 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.crewl.app.R
+import com.crewl.app.data.model.country.Country
 import com.crewl.app.ui.component.ButtonState
 import com.crewl.app.ui.component.AnimatedButton
 import com.crewl.app.ui.component.CrewlTextField
@@ -60,6 +60,7 @@ import com.crewl.app.ui.component.PrivacyPolicyBottomSheet
 import com.crewl.app.ui.router.Screen
 import com.crewl.app.ui.theme.*
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 const val KeyboardDelay = 750L
@@ -68,25 +69,26 @@ const val KeyboardDelay = 750L
 @Composable
 fun LoginScreen(navigator: NavHostController, viewModel: LoginViewModel = hiltViewModel()) {
     val context = LocalContext.current
-    val focusManager = LocalFocusManager.current
 
     val keyboard = LocalSoftwareKeyboardController.current
+
+    var expanded by remember { mutableStateOf(false) }
+    var selectedCountry by remember { mutableStateOf<Country?>(null) }
+    val focusManager = LocalFocusManager.current
 
     val focusRequester = remember { FocusRequester() }
     val coroutineScope = rememberCoroutineScope()
 
-    val skipHalfExpanded by remember { mutableStateOf(true) }
+    val isSkipHalfExpanded by remember { mutableStateOf(true) }
 
-    val sheetState = rememberModalBottomSheetState(
+    val bottomSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
-        skipHalfExpanded = skipHalfExpanded
+        skipHalfExpanded = isSkipHalfExpanded
     )
-    
-    val isPrivacyPolicyClicked = remember {
-        mutableStateOf(false)
-    }
 
     val phoneNumber by viewModel.phoneNumber
+
+    val bottomSheetType by viewModel.bottomSheetType
 
     LaunchedEffect(key1 = context) {
         viewModel.logUserInEvent.collect() { event ->
@@ -106,6 +108,10 @@ fun LoginScreen(navigator: NavHostController, viewModel: LoginViewModel = hiltVi
                 is LoginEvent.Navigate -> {
                     navigator.navigate(route = Screen.AuthenticationLoginScreen.route)
                 }
+                is LoginEvent.OpenBottomSheet -> {
+                    if (!bottomSheetState.isVisible)
+                        bottomSheetState.show()
+                }
             }
         }
     }
@@ -120,18 +126,24 @@ fun LoginScreen(navigator: NavHostController, viewModel: LoginViewModel = hiltVi
     }
 
     ModalBottomSheetLayout(
-        sheetState = sheetState,
-        scrimColor = Yellow,
+        sheetState = bottomSheetState,
         sheetBackgroundColor = Color.Red,
         sheetShape = RoundedCornerShape(
             topStart = 20.dp,
             topEnd = 20.dp
         ),
+        scrimColor = Black.copy(alpha = 0.50f),
         sheetContent = {
-            if (!isPrivacyPolicyClicked.value)
-                PrivacyPolicyBottomSheet(painter = painterResource(id = R.drawable.img_terms_of_service), text = stringResource(id = R.string.terms_of_service))
+            if (bottomSheetType == BottomSheetType.TermsOfService)
+                PrivacyPolicyBottomSheet(
+                    painter = painterResource(id = R.drawable.img_terms_of_service),
+                    text = stringResource(id = R.string.terms_of_service)
+                )
             else
-                PrivacyPolicyBottomSheet(painter = painterResource(id = R.drawable.img_privacy_policy), text = stringResource(id = R.string.privacy_policy))
+                PrivacyPolicyBottomSheet(
+                    painter = painterResource(id = R.drawable.img_privacy_policy),
+                    text = stringResource(id = R.string.privacy_policy)
+                )
         }
     ) {
         Box(
@@ -139,140 +151,49 @@ fun LoginScreen(navigator: NavHostController, viewModel: LoginViewModel = hiltVi
                 .fillMaxSize()
                 .clickable {
                     coroutineScope.launch {
-                        if (sheetState.isVisible) {
-                            sheetState.hide()
-                        }
+                        if (bottomSheetState.isVisible)
+                            bottomSheetState.hide()
                     }
                 }
                 .padding(20.dp)
         ) {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                item {
-                    Spacer(modifier = Modifier.height(20.dp))
+            keyboard?.let { _keyboard ->
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    item {
+                        HeaderContent()
 
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(id = R.string.login_header_title),
-                        style = LightTypography.h1.copy(
-                            fontSize = 24.sp,
-                            textAlign = TextAlign.Start
-                        ),
-                    )
-
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(id = R.string.login_header_description),
-                        style = MaterialTheme.typography.body1.copy(
-                            color = SubtitleColor,
-                            textAlign = TextAlign.Start,
-                            lineHeight = 24.sp,
-                            letterSpacing = (-0.05).sp
-                        ),
-                    )
-
-                    Spacer(modifier = Modifier.height(30.dp))
-
-                    Row {
-                        Box(
-                            modifier = Modifier
-                                .padding(top = 10.dp)
-                                .background(White, Shapes.large)
-                                .clip(Shapes.large)
-                                .border(1.dp, Gray25)
-                                .wrapContentSize()
-                        ) {
-                            Text(
-                                modifier = Modifier.padding(horizontal = 15.dp, vertical = 10.dp),
-                                text = "+90",
-                                style = MaterialTheme.typography.subtitle1.copy(
-                                    color = Black,
-                                    fontWeight = FontWeight.Bold,
-                                    textAlign = TextAlign.Center
-                                )
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.width(10.dp))
-
-                        CrewlTextField(
-                            modifier = Modifier
-                                .focusRequester(focusRequester)
-                                .onFocusChanged {
-                                    if (it.isFocused) keyboard?.show()
-                                },
-                            value = phoneNumber,
-                            onValueChange = {
-                                viewModel.onPhoneNumberChanged(phoneNumber = it)
-                            },
-                            label = {
-                                Text(
-                                    text = stringResource(id = R.string.phone_number),
-                                    style = androidx.compose.material3.MaterialTheme.typography.bodyLarge.copy(
-                                        color = FocusedLabelColor
-                                    )
-                                )
-                            },
-                            placeholder = {
-                                Text(text = stringResource(id = R.string.login_phone_number_placeholder))
-                            },
-                            singleLine = true,
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-                            supportingText = {
-                                Text(
-                                    text = buildAnnotatedString {
-                                        withStyle(style = SpanStyle(color = Color.Red, fontWeight = FontWeight.Bold)) {
-                                            append("* ")
-                                        }
-                                        withStyle(style = SpanStyle(color = FocusedLabelColor)) {
-                                            append(stringResource(id = R.string.login_phone_number_supporting_text))
-                                        }
-                                    },
-                                    style = androidx.compose.material3.MaterialTheme.typography.bodyMedium.copy(
-                                        color = FocusedLabelColor
-                                    )
-                                )
-                            }
+                        MainContent(
+                            viewModel = viewModel,
+                            phoneNumber = phoneNumber,
+                            focusRequester = focusRequester,
+                            keyboard = _keyboard
                         )
                     }
                 }
-            }
 
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.BottomCenter
-            ) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    keyboard?.let {
-                        PrivacyPolicyBox(sheetState, it, isPrivacyPolicyClicked)
-                    }
-
-                    Spacer(modifier = Modifier.height(20.dp))
-
-                    AnimatedButton(text = stringResource(id = R.string.continue_string))
-                }
+                FooterContent(
+                    viewModel = viewModel,
+                    keyboard = _keyboard
+                )
             }
         }
 
-        BackHandler(enabled = sheetState.isVisible) {
+        BackHandler(enabled = bottomSheetState.isVisible) {
             coroutineScope.launch {
-                sheetState.hide()
+                bottomSheetState.hide()
             }
         }
     }
-
 }
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun PrivacyPolicyBox(
-    sheetState: ModalBottomSheetState,
+    viewModel: LoginViewModel,
     keyboard: SoftwareKeyboardController,
-    isPrivacyPolicyClicked: MutableState<Boolean>,
     onButtonClick: () -> Unit = {}
 ) {
     var buttonState by remember { mutableStateOf(ButtonState.Idle) }
@@ -339,10 +260,7 @@ fun PrivacyPolicyBox(
                 }
 
                 val annotatedText = buildAnnotatedString {
-                    pushStringAnnotation(
-                        tag = "termsOfService",// provide tag which will then be provided when you click the text
-                        annotation = "termsOfService"
-                    )
+                    pushStringAnnotation(tag = "termsOfService", annotation = "termsOfService")
                     withStyle(style = SpanStyle(color = Black, fontWeight = FontWeight.Bold)) {
                         append("Kullanım Koşulları ")
                     }
@@ -350,10 +268,7 @@ fun PrivacyPolicyBox(
                     withStyle(style = SpanStyle(color = SubtitleColor, fontWeight = FontWeight.Normal)) {
                         append("ve")
                     }
-                    pushStringAnnotation(
-                        tag = "privacyPolicy",// provide tag which will then be provided when you click the text
-                        annotation = "privacyPolicy"
-                    )
+                    pushStringAnnotation(tag = "privacyPolicy", annotation = "privacyPolicy")
                     withStyle(style = SpanStyle(color = Black, fontWeight = FontWeight.Bold)) {
                         append(" Güvenlik Sözleşmesi")
                     }
@@ -374,10 +289,8 @@ fun PrivacyPolicyBox(
                             coroutineScope.launch {
                                 keyboard.hide()
                                 delay(700L)
-                                isPrivacyPolicyClicked.value = false
-                                if (!sheetState.isVisible) {
-                                    sheetState.show()
-                                }
+
+                                viewModel.onBottomSheetClicked(type = BottomSheetType.TermsOfService)
                             }
                         }
 
@@ -388,11 +301,9 @@ fun PrivacyPolicyBox(
                         ).firstOrNull()?.let {
                             coroutineScope.launch {
                                 keyboard.hide()
-                                isPrivacyPolicyClicked.value = true
-                                delay(1000L)
-                                if (!sheetState.isVisible) {
-                                    sheetState.show()
-                                }
+                                delay(700L)
+
+                                viewModel.onBottomSheetClicked(type = BottomSheetType.PrivacyPolicy)
                             }
                         }
                     },
@@ -417,5 +328,127 @@ fun PrivacyPolicyBox(
                 .background(Black, shape = Shapes.small)
                 .align(Alignment.BottomEnd)
         ) {}
+    }
+}
+
+@Composable
+fun HeaderContent() {
+    Spacer(modifier = Modifier.height(20.dp))
+
+    Text(
+        modifier = Modifier.fillMaxWidth(),
+        text = stringResource(id = R.string.login_header_title),
+        style = LightTypography.h1.copy(
+            fontSize = 24.sp,
+            textAlign = TextAlign.Start
+        ),
+    )
+
+    Spacer(modifier = Modifier.height(10.dp))
+
+    Text(
+        modifier = Modifier.fillMaxWidth(),
+        text = stringResource(id = R.string.login_header_description),
+        style = MaterialTheme.typography.body1.copy(
+            color = SubtitleColor,
+            textAlign = TextAlign.Start,
+            lineHeight = 24.sp,
+            letterSpacing = (-0.05).sp
+        ),
+    )
+
+    Spacer(modifier = Modifier.height(30.dp))
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun MainContent(
+    viewModel: LoginViewModel,
+    phoneNumber: TextFieldValue,
+    focusRequester: FocusRequester,
+    keyboard: SoftwareKeyboardController
+) {
+    Row {
+        Box(
+            modifier = Modifier
+                .padding(top = 10.dp)
+                .background(White, Shapes.medium)
+                .clip(Shapes.medium)
+                .border(1.dp, Gray25)
+                .wrapContentSize()
+        ) {
+            Text(
+                modifier = Modifier.padding(horizontal = 15.dp, vertical = 10.dp),
+                text = "\uD83C\uDDF9\uD83C\uDDF7 +90",
+                style = MaterialTheme.typography.subtitle1.copy(
+                    color = Black,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
+                )
+            )
+        }
+
+        Spacer(modifier = Modifier.width(10.dp))
+
+        CrewlTextField(
+            modifier = Modifier
+                .focusRequester(focusRequester = focusRequester)
+                .onFocusChanged { state ->
+                    if (state.isFocused)
+                        keyboard.show()
+                },
+            value = phoneNumber,
+            onValueChange = {
+                viewModel.onPhoneNumberChanged(phoneNumber = it)
+            },
+            label = {
+                Text(
+                    text = stringResource(id = R.string.phone_number),
+                    style = androidx.compose.material3.MaterialTheme.typography.bodyLarge.copy(
+                        color = FocusedLabelColor
+                    )
+                )
+            },
+            placeholder = {
+                Text(text = stringResource(id = R.string.login_phone_number_placeholder))
+            },
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+            supportingText = {
+                Text(
+                    text = buildAnnotatedString {
+                        withStyle(style = SpanStyle(color = Color.Red, fontWeight = FontWeight.Bold)) {
+                            append("* ")
+                        }
+                        withStyle(style = SpanStyle(color = FocusedLabelColor)) {
+                            append(stringResource(id = R.string.login_phone_number_supporting_text))
+                        }
+                    },
+                    style = androidx.compose.material3.MaterialTheme.typography.bodyMedium.copy(
+                        color = FocusedLabelColor
+                    )
+                )
+            }
+        )
+    }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun FooterContent(
+    viewModel: LoginViewModel,
+    keyboard: SoftwareKeyboardController
+) {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.BottomCenter
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            PrivacyPolicyBox(viewModel = viewModel, keyboard = keyboard)
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            AnimatedButton(text = stringResource(id = R.string.continue_string))
+        }
     }
 }

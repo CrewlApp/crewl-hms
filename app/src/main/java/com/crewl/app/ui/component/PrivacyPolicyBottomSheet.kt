@@ -45,8 +45,6 @@ fun PrivacyPolicyBottomSheet(
 
     val scope = rememberCoroutineScope()
 
-    val focusManager = LocalFocusManager.current
-
     Column(
         modifier = Modifier
             .background(White)
