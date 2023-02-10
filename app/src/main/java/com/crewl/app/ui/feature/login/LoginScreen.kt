@@ -1,13 +1,11 @@
 package com.crewl.app.ui.feature.login
 
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.VectorConverter
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -27,13 +25,11 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Yellow
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.boundsInParent
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -52,16 +48,17 @@ import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.crewl.app.R
-import com.crewl.app.data.model.country.Country
 import com.crewl.app.ui.component.ButtonState
 import com.crewl.app.ui.component.AnimatedButton
 import com.crewl.app.ui.component.CrewlTextField
-import com.crewl.app.ui.component.PrivacyPolicyBottomSheet
+import com.crewl.app.ui.component.CrewlContentScreen
 import com.crewl.app.ui.router.Screen
 import com.crewl.app.ui.theme.*
+import com.crewl.app.ui.widgets.PrivacyPolicyScreen
+import com.crewl.app.ui.widgets.TermsOfServiceScreen
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 const val KeyboardDelay = 750L
 
@@ -71,10 +68,6 @@ fun LoginScreen(navigator: NavHostController, viewModel: LoginViewModel = hiltVi
     val context = LocalContext.current
 
     val keyboard = LocalSoftwareKeyboardController.current
-
-    var expanded by remember { mutableStateOf(false) }
-    var selectedCountry by remember { mutableStateOf<Country?>(null) }
-    val focusManager = LocalFocusManager.current
 
     val focusRequester = remember { FocusRequester() }
     val coroutineScope = rememberCoroutineScope()
@@ -109,6 +102,7 @@ fun LoginScreen(navigator: NavHostController, viewModel: LoginViewModel = hiltVi
                     navigator.navigate(route = Screen.AuthenticationLoginScreen.route)
                 }
                 is LoginEvent.OpenBottomSheet -> {
+                    Timber.tag("App.tag").i("OpenBottomSheet: called.%s", viewModel.isBottomSheetActive.value)
                     if (!bottomSheetState.isVisible)
                         bottomSheetState.show()
                 }
@@ -127,23 +121,37 @@ fun LoginScreen(navigator: NavHostController, viewModel: LoginViewModel = hiltVi
 
     ModalBottomSheetLayout(
         sheetState = bottomSheetState,
-        sheetBackgroundColor = Color.Red,
+        sheetContentColor = Color.Red,
         sheetShape = RoundedCornerShape(
             topStart = 20.dp,
             topEnd = 20.dp
         ),
         scrimColor = Black.copy(alpha = 0.50f),
         sheetContent = {
-            if (bottomSheetType == BottomSheetType.TermsOfService)
-                PrivacyPolicyBottomSheet(
-                    painter = painterResource(id = R.drawable.img_terms_of_service),
-                    text = stringResource(id = R.string.terms_of_service)
-                )
-            else
-                PrivacyPolicyBottomSheet(
-                    painter = painterResource(id = R.drawable.img_privacy_policy),
-                    text = stringResource(id = R.string.privacy_policy)
-                )
+            if (viewModel.isBottomSheetActive.value) {
+                if (bottomSheetType == BottomSheetType.TermsOfService){
+                    CrewlContentScreen(
+                        header = {
+                            TermsOfServiceScreen.Header()
+                        },
+                        main = {
+                            TermsOfServiceScreen.Main()
+                        },
+                        footer = {}
+                    )
+                }
+                else {
+                    CrewlContentScreen(
+                        header = {
+                            PrivacyPolicyScreen.Header()
+                        },
+                        main = {
+                            PrivacyPolicyScreen.Main()
+                        },
+                        footer = {}
+                    )
+                }
+            }
         }
     ) {
         Box(
@@ -288,7 +296,6 @@ fun PrivacyPolicyBox(
                         ).firstOrNull()?.let {
                             coroutineScope.launch {
                                 keyboard.hide()
-                                delay(700L)
 
                                 viewModel.onBottomSheetClicked(type = BottomSheetType.TermsOfService)
                             }
@@ -301,7 +308,6 @@ fun PrivacyPolicyBox(
                         ).firstOrNull()?.let {
                             coroutineScope.launch {
                                 keyboard.hide()
-                                delay(700L)
 
                                 viewModel.onBottomSheetClicked(type = BottomSheetType.PrivacyPolicy)
                             }

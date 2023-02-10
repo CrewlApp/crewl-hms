@@ -54,7 +54,7 @@ fun CountryCodeBottomSheet(
             title()
 
             Column {
-                searchValue = countrySearchView(modalBottomSheetState)
+                searchValue = CountryCodeSearchView()
 
                 LazyColumn(
                     contentPadding = PaddingValues(16.dp)

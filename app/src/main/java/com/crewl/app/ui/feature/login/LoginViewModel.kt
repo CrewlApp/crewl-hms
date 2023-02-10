@@ -6,9 +6,12 @@ import androidx.lifecycle.viewModelScope
 import com.crewl.app.framework.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 enum class BottomSheetType {
@@ -28,6 +31,7 @@ class LoginViewModel @Inject constructor() : BaseViewModel() {
     val bottomSheetType: State<BottomSheetType>
         get() = _bottomSheetType
 
+    val isBottomSheetActive = mutableStateOf(false)
     fun savePhoneNumber(phoneNumber: TextFieldValue) {
         if (validatePhoneNumber(phoneNumber.text)) {
             onSavePhoneNumberSuccess(status = true)
@@ -98,8 +102,12 @@ class LoginViewModel @Inject constructor() : BaseViewModel() {
      * @see LoginEvent.OpenBottomSheet
      */
     fun onBottomSheetClicked(type: BottomSheetType) = viewModelScope.launch {
-        changeBottomSheetType(type = type)
-        _logUserInEventChannel.send(LoginEvent.OpenBottomSheet(type = type))
+            delay(1700L)
+        Timber.tag("App.tag").i("onBottomSheetClicked: called.")
+
+            isBottomSheetActive.value = true
+            changeBottomSheetType(type = type)
+            _logUserInEventChannel.send(LoginEvent.OpenBottomSheet(type = type))
     }
     // endregion
 }

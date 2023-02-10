@@ -25,7 +25,7 @@ import com.crewl.app.R
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun countrySearchView(state: ModalBottomSheetState): String {
+fun CountryCodeSearchView(): String {
 
     var searchValue: String by rememberSaveable { mutableStateOf("") }
     var showClearIcon by rememberSaveable { mutableStateOf(false) }
@@ -33,9 +33,6 @@ fun countrySearchView(state: ModalBottomSheetState): String {
 
     showClearIcon = searchValue.isNotEmpty()
 
-    if (!state.isVisible) {
-        searchValue = ""
-    }
 
     Row {
         Box(
@@ -106,12 +103,3 @@ fun countrySearchView(state: ModalBottomSheetState): String {
     return searchValue
 }
 
-
-@OptIn(ExperimentalMaterialApi::class)
-@Preview
-@Composable
-fun PreviewSearchView() {
-    countrySearchView(
-        rememberModalBottomSheetState(ModalBottomSheetValue.Expanded)
-    )
-}
