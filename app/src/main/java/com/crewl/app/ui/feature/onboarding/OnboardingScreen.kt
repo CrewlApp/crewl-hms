@@ -17,18 +17,17 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.crewl.app.R
 import com.crewl.app.data.model.onboarding.OnboardingItem
-import com.crewl.app.ui.component.AnimatedButton
+import com.crewl.app.ui.component.LongButton
 import com.crewl.app.ui.router.Screen
 import com.crewl.app.ui.theme.*
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun OnboardingScreen(navigator: NavHostController, viewModel: OnboardingViewModel = hiltViewModel()) {
+fun OnboardingScreen(navigator: NavHostController, viewModel: OnboardingViewModel) {
     val context = LocalContext.current
 
     val itemsOfOnboarding = viewModel.data.items
@@ -51,7 +50,7 @@ fun OnboardingScreen(navigator: NavHostController, viewModel: OnboardingViewMode
             pageCount = itemsOfOnboarding.count(),
             state = pagerState,
             modifier = Modifier
-                .weight(1.0f)
+                .weight(1.20f)
                 .fillMaxWidth()
         ) { position ->
             PagerScreen(onboardingItem = itemsOfOnboarding[position])
@@ -61,10 +60,10 @@ fun OnboardingScreen(navigator: NavHostController, viewModel: OnboardingViewMode
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
             modifier = Modifier
-                .weight(0.15f)
+                .weight(0.25f)
                 .fillMaxWidth()
         ) {
-            AnimatedButton(fraction = 0.75f, text = stringResource(id = R.string.continue_string)) {
+            LongButton(fraction = 0.75f, text = stringResource(id = R.string.continue_string)) {
                 if (pagerState.currentPage + 1 < itemsOfOnboarding.size)
                     coroutinesScope.launch {
                         pagerState.animateScrollToPage(pagerState.currentPage + 1)
@@ -81,7 +80,7 @@ fun PagerScreen(onboardingItem: OnboardingItem) {
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center
     ) {
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(30.dp))
 
         Text(
             modifier = Modifier
@@ -99,7 +98,7 @@ fun PagerScreen(onboardingItem: OnboardingItem) {
 
         Image(
             modifier = Modifier
-                .width(350.dp),
+                .width(400.dp),
             painter = painterResource(id = onboardingItem.image),
             contentDescription = "Pager Image"
         )
@@ -109,7 +108,7 @@ fun PagerScreen(onboardingItem: OnboardingItem) {
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 25.dp),
+                .padding(horizontal = 35.dp),
             text = onboardingItem.description,
             fontFamily = SpaceGrotesk,
             color = SubtitleColor,

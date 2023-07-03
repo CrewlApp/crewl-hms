@@ -5,5 +5,5 @@ sealed class Screen(val route: String) {
     object OnboardingScreen : Screen(route = Route.Onboarding)
     object PreHomeScreen : Screen(route = Route.PreHome)
     object LoginScreen : Screen(route = Route.Login)
-    object AuthenticationLoginScreen : Screen(route = Route.AuthenticationLogin)
+    object AuthenticationScreen : Screen(route = Route.Authentication)
 }

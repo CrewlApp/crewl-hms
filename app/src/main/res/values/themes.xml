@@ -3,6 +3,7 @@
     <style name="Theme.Crewl" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:statusBarColor">@color/softPeach</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowBackground">@color/softPeach</item>
     </style>
 
     <style name="SplashScreenTheme" parent="Theme.Crewl">

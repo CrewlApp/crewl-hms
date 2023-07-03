@@ -32,6 +32,7 @@
     <string name="star_input">* </string>
     <string name="privacy_policy">Gizlilik Politikası</string>
     <string name="terms_of_service">Kullanım Koşulları</string>
+    <string name="send_verification_code">Onay Kodu Gönder</string>
 
     <string name="phone_number">Telefon Numarası</string>
 

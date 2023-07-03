@@ -30,7 +30,7 @@ class ProviderModule {
 
     @Provides
     @Singleton
-    fun provideAppResourceProvider(@ApplicationContext context: Context): ResourceProvider = AppResourceProvider(context)
+    fun provideAppResourceProvider(): ResourceProvider = AppResourceProvider()
 
     @Provides
     @Singleton

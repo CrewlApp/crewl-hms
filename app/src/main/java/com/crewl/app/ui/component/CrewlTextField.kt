@@ -7,11 +7,13 @@
 package com.crewl.app.ui.component
 
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.sp
 import com.crewl.app.ui.theme.*
 
@@ -38,8 +40,10 @@ fun CrewlTextField(
         textColor = TextColor,
         focusedIndicatorColor = FocusedIndicatorColor,
         unfocusedIndicatorColor = UnfocusedIndicatorColor,
-        cursorColor = CursorColor
-    )
+        cursorColor = CursorColor,
+        selectionColors = TextSelectionColors(handleColor = Black, backgroundColor = Black.copy(alpha = 0.1f))
+    ),
+    visualTransformation: VisualTransformation = VisualTransformation.None
 ) {
     TextField(
         modifier = modifier,
@@ -51,6 +55,7 @@ fun CrewlTextField(
         singleLine = singleLine,
         keyboardOptions = keyboardOptions,
         colors = colors,
-        supportingText = supportingText
+        supportingText = supportingText,
+        visualTransformation = visualTransformation
     )
 }

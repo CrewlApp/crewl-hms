@@ -5,5 +5,5 @@ object Route {
     const val Onboarding = "onboarding"
     const val PreHome = "prehome"
     const val Login = "login"
-    const val AuthenticationLogin = "authentication_login"
+    const val Authentication = "authentication/{phone}"
 }

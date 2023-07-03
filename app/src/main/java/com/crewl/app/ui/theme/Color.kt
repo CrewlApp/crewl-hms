@@ -6,6 +6,10 @@ import com.crewl.app.ui.component.CrewlTextField
 val SoftPeach = Color(0xFFF4ECE8)
 val BrightGold = Color(0xFFFECB18)
 val CarbonGray = Color(0xFF606060)
+val RiverLady = Color(0xFFA0A0A0)
+val DragonsScale = Color(0xFF1C1C1C)
+val FourLeafCloverGreens = Color(0xFF14A307)
+val TacoBellRed = Color(0xFFE8473E)
 
 val Black = Color(0xFF000000)
 val White = Color(0xFFFFFFFF)
@@ -30,6 +34,7 @@ val Gray700 = Color(0xFF616161)
 val Gray800 = Color(0xFF292929)
 val Gray900 = Color(0xFF212121)
 val Gray950 = Color(0xFF141414)
+
 
 /**
  * Custom filled text field color values.

@@ -1,4 +1,4 @@
-package com.alis.framework.usecase
+package com.crewl.app.framework.usecase
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

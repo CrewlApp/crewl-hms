@@ -15,8 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class OnboardingViewModel @Inject constructor(
-    private val saveOnboardingUseCase: SaveOnboardingUseCase,
-    private val readOnboardingUseCase: ReadOnboardingUseCase
+    private val saveOnboardingUseCase: SaveOnboardingUseCase
 ) : BaseViewModel() {
     val data by mutableStateOf(OnboardingState())
 

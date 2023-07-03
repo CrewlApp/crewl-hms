@@ -1,24 +1,29 @@
 package com.crewl.app.ui.feature.prehome
 
-import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.paint
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.crewl.app.R
-import com.crewl.app.ui.component.AnimatedButton
 import com.crewl.app.ui.router.Screen
 import com.crewl.app.ui.theme.*
+import com.crewl.app.utils.rememberWindowInfo
 
 @Composable
 fun PreHomeScreen(navigator: NavHostController, viewModel: PreHomeViewModel = hiltViewModel()) {
     val context = LocalContext.current
+
+    val windowInfo = rememberWindowInfo()
+    val screenWidth = windowInfo.screenWidth
+    val screenHeight = windowInfo.screenHeight
 
     LaunchedEffect(key1 = context) {
         viewModel.preHomeEvent.collect() { event ->
@@ -33,40 +38,24 @@ fun PreHomeScreen(navigator: NavHostController, viewModel: PreHomeViewModel = hi
         }
     }
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .paint(painterResource(id = R.drawable.bg_prehome), contentScale = ContentScale.FillWidth)) {
         Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .weight(0.8f),
-            verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Image(
-                modifier = Modifier
-                    .fillMaxSize(0.4f),
-                painter = painterResource(id = R.drawable.logo),
-                contentDescription = "Logo"
-            )
-
-            Spacer(modifier = Modifier.height(20.dp))
-        }
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxSize()
                 .padding(horizontal = 20.dp)
-                .weight(0.4f),
-            verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally
+                .padding(bottom = (screenHeight * 0.25).dp),
+            verticalArrangement = Arrangement.Bottom, horizontalAlignment = Alignment.CenterHorizontally
         )
         {
-            AnimatedButton(fraction = 0.80f, foregroundColor = White, text = stringResource(id = R.string.login_string)) {
-                viewModel.onLoginClicked()
-            }
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            AnimatedButton(fraction = 0.80f, foregroundColor = BrightGold, text = stringResource(id = R.string.register_string)) {
-                viewModel.onRegisterClicked()
-            }
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .padding(horizontal = 15.dp, vertical = 10.dp)
+                    .size(25.dp),
+                color = Black,
+                strokeWidth = 2.dp
+            )
         }
     }
 }

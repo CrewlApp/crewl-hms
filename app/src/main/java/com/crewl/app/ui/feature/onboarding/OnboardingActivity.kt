@@ -2,11 +2,13 @@ package com.crewl.app.ui.feature.onboarding
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -37,7 +39,7 @@ class OnboardingActivity : FragmentActivity() {
             CrewlTheme {
                 SetupSystemUI(systemUiController = rememberSystemUiController(), systemColor = SoftPeach)
 
-                Surface(modifier = Modifier.fillMaxSize(), color = SoftPeach) {
+                Surface(modifier = Modifier.fillMaxSize().background(SoftPeach), color = SoftPeach) {
                     navHostController = rememberNavController()
                     SetupNavigationGraph(navController = navHostController)
                 }

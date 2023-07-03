@@ -39,14 +39,14 @@ private fun PrivacyPolicyHeaderSection() {
     Image(
         modifier = Modifier.padding(horizontal = 50.dp),
         painter = painterResource(id = R.drawable.img_privacy_policy),
-        contentDescription = stringResource(id = R.string.privacy_policy)
+        contentDescription = stringResource(id = R.string.PRIVACY_POLICY)
     )
 
     Spacer(modifier = Modifier.height(10.dp))
 
     Text(
         modifier = Modifier.padding(horizontal = 10.dp),
-        text = stringResource(id = R.string.privacy_policy),
+        text = stringResource(id = R.string.PRIVACY_POLICY),
         fontFamily = SpaceGrotesk,
         fontSize = 24.sp,
         color = Black,

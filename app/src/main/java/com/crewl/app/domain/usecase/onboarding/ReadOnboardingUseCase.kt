@@ -7,7 +7,7 @@
 package com.crewl.app.domain.usecase.onboarding
 
 import androidx.annotation.VisibleForTesting
-import com.alis.framework.usecase.UseCaseController
+import com.crewl.app.framework.usecase.UseCaseController
 import com.crewl.app.domain.repository.OnboardingRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

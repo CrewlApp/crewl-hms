@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
 abstract class LocalUseCaseController<in Params, ReturnType> where ReturnType : Any {
-
     protected abstract suspend fun FlowCollector<ReturnType>.execute(params: Params)
 
     suspend operator fun invoke(params: Params) = flow {
