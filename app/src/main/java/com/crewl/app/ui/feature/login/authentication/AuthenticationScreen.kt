@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -30,20 +31,27 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.navigation.NavHostController
 import com.crewl.app.R
+import com.crewl.app.framework.base.BaseEvent
 import com.crewl.app.helper.Constants.KEYBOARD_DELAY
 import com.crewl.app.ui.component.LongButton
 import com.crewl.app.ui.component.ResendCodeView
 import com.crewl.app.ui.component.ToolbarView
 import com.crewl.app.ui.feature.login.LoginSharedEvent
 import com.crewl.app.ui.feature.login.LoginSharedViewModel
+import com.crewl.app.ui.router.Route
+import com.crewl.app.ui.router.Screen
 import com.crewl.app.ui.theme.*
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -59,12 +67,36 @@ fun AuthenticationScreen(navigator: NavHostController, viewModel: LoginSharedVie
         viewModel.logUserInEvent.collect { event ->
             when (event) {
                 is LoginSharedEvent.CodeChanged -> {
+                    viewModel.setLoading(false)
+
                     viewModel.updateCode(code = event.code)
                 }
-                is LoginSharedEvent.Navigate -> {
+
+                is BaseEvent.Navigate -> {
+                    viewModel.setLoading(false)
+
+                    val gson: Gson = GsonBuilder().create()
+                    val phoneNumberJson = gson.toJson(state.number)
+
+                    navigator.navigate("${event.route}/$phoneNumberJson")
                 }
-                is LoginSharedEvent.Loading -> {
+
+                is LoginSharedEvent.OnAuthenticationSuccess -> {
+                    viewModel.checkIfUserExists()
                 }
+
+                is BaseEvent.Loading -> {
+                    keyboard?.hide()
+                    viewModel.setLoading(true)
+                }
+
+                is BaseEvent.Error -> {
+                    keyboard?.show()
+                    viewModel.setLoading(false)
+
+                    Timber.tag("App.tag").i("AuthenticationScreen: %s", event.message)
+                }
+
                 else -> {}
             }
         }
@@ -103,7 +135,8 @@ fun AuthenticationScreen(navigator: NavHostController, viewModel: LoginSharedVie
             FooterContent(
                 onNavigate = {viewModel.verifyCode()},
                 isCodeValid = code.text.length > 5,
-                onResendCodeClicked = {}
+                isLoading = state.isLoading,
+                onResendCodeClicked = {viewModel.resendCode()}
             )
         }
     }
@@ -217,18 +250,18 @@ private fun AuthenticationBoxItem(
 
     val isFocused = value.length > index
 
-    val updatedOffsetX by animateDpAsState(if (isFocused) (3.dp) else (0.dp))
-    val updatedOffsetY by animateDpAsState(if (isFocused) (3.dp) else (0.dp))
+    val updatedOffsetX by animateDpAsState(if (isFocused) (4.dp) else (0.dp))
+    val updatedOffsetY by animateDpAsState(if (isFocused) (4.dp) else (0.dp))
 
     Box(
-        modifier = Modifier.size(43.dp), contentAlignment = Alignment.Center
+        modifier = Modifier.size(44.dp), contentAlignment = Alignment.Center
     ) {
         Row(
             modifier = Modifier
                 .size(40.dp)
                 .offset(updatedOffsetX, updatedOffsetY)
                 .background(White, Shapes.small)
-                .border(2.dp, if (!isCodeWrong) Black else TacoBellRed, Shapes.small)
+                .border(1.5.dp, if (!isCodeWrong) Black else TacoBellRed, Shapes.small)
                 .align(Alignment.TopStart)
                 .zIndex(1f),
             verticalAlignment = Alignment.CenterVertically,
@@ -250,8 +283,9 @@ private fun AuthenticationBoxItem(
             modifier = Modifier
                 .size(40.dp)
                 .zIndex(0f)
-                .background(Black, Shapes.small)
-                .offset(3.dp, 3.dp)
+                .background(SoftPeach, shape = RoundedCornerShape(2.dp))
+                .border(1.5.dp, Black, shape = RoundedCornerShape(2.dp))
+                .offset(4.dp, 4.dp)
                 .align(Alignment.BottomEnd)
         )
     }
@@ -263,22 +297,29 @@ private fun AuthenticationBoxItem(
 private fun FooterContent(
     onResendCodeClicked: () -> Unit,
     isCodeValid: Boolean,
+    isLoading: Boolean,
     onNavigate: () -> Unit
 ) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.BottomCenter
     ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Column {
             ResendCodeView {
                 onResendCodeClicked()
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(25.dp))
 
-            LongButton(text = stringResource(id = R.string.CONFIRM_CODE), isActive = isCodeValid) {
+            LongButton(text = stringResource(id = R.string.CONFIRM_CODE), isActive = isCodeValid && !isLoading, isLoading = isLoading) {
                 onNavigate()
             }
         }
     }
+}
+
+@Composable
+@Preview
+fun PreviewAuthenticationBoxItem() {
+    AuthenticationBoxItem("1", 2, false)
 }

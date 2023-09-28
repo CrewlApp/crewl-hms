@@ -4,6 +4,8 @@ import android.app.Activity
 import android.util.Log
 import androidx.compose.runtime.*
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.crewl.app.data.model.country.Country
 import com.crewl.app.data.model.user.PhoneNumber
@@ -11,12 +13,15 @@ import com.crewl.app.domain.usecase.authentication.CheckUserUseCase
 import com.crewl.app.domain.usecase.login.SearchCountryUseCase
 import com.crewl.app.domain.usecase.authentication.SignInUseCase
 import com.crewl.app.domain.usecase.authentication.SignUpUseCase
+import com.crewl.app.framework.base.BaseEvent
 import com.crewl.app.framework.base.BaseViewModel
+import com.crewl.app.framework.base.IOTaskResult
 import com.crewl.app.framework.base.ViewState
 import com.crewl.app.helper.countryCode.CountryCodeHelper.Companion.formatCountry
 import com.crewl.app.helper.countryCode.CountryCodeHelper.Companion.getCountry
 import com.crewl.app.helper.countryCode.CountryCodeHelper.Companion.getCountryFromLocal
 import com.crewl.app.helper.countryCode.CountryCodeHelper.Companion.getEmojiFromLocal
+import com.crewl.app.ui.router.Route
 import com.crewl.app.ui.router.Screen
 import com.crewl.app.utils.RegexValidation
 import com.crewl.app.utils.isValid
@@ -33,6 +38,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.coroutines.Continuation
@@ -49,8 +55,8 @@ class LoginSharedViewModel @Inject constructor(
     private val signInUseCase: SignInUseCase,
     private val signUpUseCase: SignUpUseCase
 ) : BaseViewModel() {
-    private val _logUserInEventChannel = Channel<LoginSharedEvent>()
-    val logUserInEvent: Flow<LoginSharedEvent>
+    private val _logUserInEventChannel = Channel<BaseEvent>()
+    val logUserInEvent: Flow<BaseEvent>
         get() = _logUserInEventChannel.receiveAsFlow()
 
     private val _logUserInStateFlow = mutableStateOf(LoginSharedState())
@@ -69,6 +75,14 @@ class LoginSharedViewModel @Inject constructor(
     val isBottomSheetActive: State<Boolean>
         get() = _isBottomSheetActive
 
+    private val _isErrorViewShown = mutableStateOf(false)
+    val isErrorViewShown: State<Boolean>
+        get() = _isErrorViewShown
+
+    private val _isInternetAvailable = MutableLiveData<Boolean>()
+    val isInternetAvailable: LiveData<Boolean>
+        get() = _isInternetAvailable
+
     private var isFirstInitialization = true
 
     private var phoneVerificationListener = PhoneVerificationListener()
@@ -86,6 +100,10 @@ class LoginSharedViewModel @Inject constructor(
         checkUserCountryFromLocal()
     }
 
+    fun updateInternetConnection(isActive: Boolean) {
+        _isInternetAvailable.value = isActive
+    }
+
     fun initFirebasePhoneAuth(activity: Activity) {
         auth.firebaseAuthSettings.setAppVerificationDisabledForTesting(true)
 
@@ -97,8 +115,15 @@ class LoginSharedViewModel @Inject constructor(
     }
 
     fun requestCode() {
+        viewModelScope.launch {
+            _logUserInEventChannel.send(BaseEvent.Loading)
+        }
+
         val options = phoneVerificationBuilder?.setPhoneNumber(_logUserInStateFlow.value.number.withCountryCode)?.build() ?: return
-        PhoneAuthProvider.verifyPhoneNumber(options)
+        if (isFirstInitialization)
+            PhoneAuthProvider.verifyPhoneNumber(options)
+        else
+            resendCode()
     }
 
     fun resendCode() {
@@ -108,15 +133,13 @@ class LoginSharedViewModel @Inject constructor(
             ?.build() ?: return
         PhoneAuthProvider.verifyPhoneNumber(options)
 
+        _code.value = TextFieldValue("")
+
         viewModelScope.launch {
-            _logUserInEventChannel.send(LoginSharedEvent.Loading)
+            _logUserInEventChannel.send(BaseEvent.Loading)
         }
 
         timeoutResendCode()
-    }
-
-    fun onFirebaseInitialization() {
-
     }
 
     fun setLoading(isLoading: Boolean) {
@@ -124,25 +147,28 @@ class LoginSharedViewModel @Inject constructor(
     }
 
     fun verifyCode() {
+        setLoading(true)
+
         credential = PhoneAuthProvider.getCredential(storedVerificationId ?: TODO("Handle operation."), code.value.text)
         viewModelScope.launch {
             val credential = credential ?: return@launch
             val token = signInWithPhoneAuthCredential(credential)
-            onNavigate(route = Screen.PreHomeScreen.route)
         }
     }
 
     private suspend fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential): String {
+        Timber.tag("App.tag").i("[signInWithPhoneAuthCredential]")
+
         val user: FirebaseUser = suspendCoroutine {
             viewModelScope.launch {
-                _logUserInEventChannel.send(LoginSharedEvent.Loading)
+                _logUserInEventChannel.send(BaseEvent.Loading)
             }
             _auth.signInWithCredential(credential).addOnCompleteListener(AuthCompleteListener(it))
         }
 
         val tokenId: String = suspendCoroutine {
             viewModelScope.launch {
-                _logUserInEventChannel.send(LoginSharedEvent.Loading)
+                _logUserInEventChannel.send(BaseEvent.Loading)
             }
             user.getIdToken(false).addOnCompleteListener(TokenIdCompleteListener(it))
         }
@@ -168,14 +194,12 @@ class LoginSharedViewModel @Inject constructor(
 
         override fun onVerificationCompleted(credential: PhoneAuthCredential) {
             this@LoginSharedViewModel.credential = credential
-            viewModelScope.launch {
-                onNavigate(route = Screen.PreHomeScreen.route)
-            }
         }
 
         override fun onVerificationFailed(e: FirebaseException) {
             if (e is FirebaseAuthInvalidCredentialsException) {
-                // Invalid request
+                Timber.tag("App.tag").i("onVerificationFailed: code wrong.")
+
             } else if (e is FirebaseTooManyRequestsException) {
                 // The SMS quota for the project has been exceeded
             }
@@ -185,6 +209,8 @@ class LoginSharedViewModel @Inject constructor(
             verificationId: String,
             token: PhoneAuthProvider.ForceResendingToken
         ) {
+            Timber.tag("App.tag").i("[onCodeSent]")
+
             storedVerificationId = verificationId
             resendToken = token
             isFirstInitialization = false
@@ -198,14 +224,11 @@ class LoginSharedViewModel @Inject constructor(
     ) : OnCompleteListener<AuthResult> {
         override fun onComplete(task: Task<AuthResult>) {
             if (task.isSuccessful) {
-                Log.i("App.tag", "onComplete: called.")
-                    onNavigate(
-                        Screen.PreHomeScreen.route
-                    )
+                onAuthenticationSuccess()
             } else if (task.exception is FirebaseAuthInvalidCredentialsException)
-                continuation.resumeWith(Result.failure(InvalidVerificationCodeError()))
+                onError(task.exception?.message ?: "")
             else
-                continuation.resumeWith(Result.failure(UnexpectedError()))
+                onError(task.exception?.message ?: "")
         }
     }
 
@@ -215,8 +238,14 @@ class LoginSharedViewModel @Inject constructor(
         override fun onComplete(task: Task<GetTokenResult>) {
             if (task.isSuccessful) {
                 val token = task.result?.token
-                if (token.isNullOrEmpty()) continuation.resumeWith(Result.failure(TokenIdIsNullError()))
-                else continuation.resumeWith(Result.success(token))
+                if (token.isNullOrEmpty()) {
+                    Timber.tag("App.tag").i("TokenIdCompleteListener onComplete: called  true.")
+                    continuation.resumeWith(Result.failure(TokenIdIsNullError()))
+                } else {
+                    Timber.tag("App.tag").i("TokenIdCompleteListener onComplete: called  false.")
+
+                    continuation.resumeWith(Result.success(token))
+                }
             } else {
                 continuation.resumeWith(Result.failure(UnexpectedError()))
             }
@@ -314,7 +343,21 @@ class LoginSharedViewModel @Inject constructor(
      * @see LoginSharedEvent.Navigate
      */
     fun onNavigate(route: String) = viewModelScope.launch {
-        _logUserInEventChannel.send(LoginSharedEvent.Navigate(route = route))
+        _logUserInEventChannel.send(BaseEvent.Navigate(route = route))
+    }
+
+    /**
+     * @see LoginSharedEvent.OnAuthenticationSuccess
+     */
+    fun onAuthenticationSuccess() = viewModelScope.launch {
+        _logUserInEventChannel.send(LoginSharedEvent.OnAuthenticationSuccess)
+    }
+
+    /**
+     * @see LoginSharedEvent.OnAuthenticationSuccess
+     */
+    fun onError(message: String) = viewModelScope.launch {
+        _logUserInEventChannel.send(BaseEvent.Error(message = message))
     }
 
     /**
@@ -347,15 +390,23 @@ class LoginSharedViewModel @Inject constructor(
         }
     }
 
-    fun checkIfUserExists(number: String) = viewModelScope.launch {
-        call {
-            checkUserUseCase.execute(number = number)
-        }.collect {
+    // Todo: Handle whole cases.
+    fun checkIfUserExists() = viewModelScope.launch {
+        setLoading(true)
+        val params = CheckUserUseCase.Params(number = _logUserInStateFlow.value.number)
+
+        call(checkUserUseCase(params = params)) {
             when (it) {
-                is ViewState.Empty -> {}
-                is ViewState.Loading -> {}
-                is ViewState.RenderFailure -> {}
-                is ViewState.RenderSuccess<Boolean> -> {}
+                is IOTaskResult.OnSuccess -> {
+                    if (it.data)
+                        onNavigate(Screen.PreRegisterScreen.route)
+                    else
+                        Timber.tag("App.tag").i("checkIfUserExists: false")
+                }
+
+                is IOTaskResult.OnFailed -> {
+                    Timber.tag("App.tag").i("checkIfUserExists: server failed")
+                }
             }
         }
     }

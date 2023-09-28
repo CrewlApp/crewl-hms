@@ -1,9 +1,7 @@
 package com.crewl.app.ui.feature.login.number
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.LinearOutSlowInEasing
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -29,11 +27,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.crewl.app.R
+import com.crewl.app.framework.base.BaseEvent
 import com.crewl.app.framework.extension.currentActivity
+import com.crewl.app.framework.extension.isInternetAvailable
 import com.crewl.app.ui.component.*
 import com.crewl.app.ui.feature.login.BottomSheetScreenType
 import com.crewl.app.ui.feature.login.LoginSharedEvent
@@ -43,14 +45,17 @@ import com.crewl.app.ui.theme.*
 import com.crewl.app.ui.widgets.CountryCodeScreen
 import com.crewl.app.ui.widgets.PrivacyPolicyScreen
 import com.crewl.app.ui.widgets.TermsOfServiceScreen
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun LoginScreen(navigator: NavHostController, viewModel: LoginSharedViewModel = hiltViewModel()) {
     val context = LocalContext.current
     val keyboard = LocalSoftwareKeyboardController.current
+
+    val isInternetConnectionActive = context.isInternetAvailable()
+    viewModel.updateInternetConnection(isInternetConnectionActive)
 
     val scope = rememberCoroutineScope()
 
@@ -75,11 +80,13 @@ fun LoginScreen(navigator: NavHostController, viewModel: LoginSharedViewModel = 
 
                     viewModel.updatePhoneNumber(event.number)
                 }
+
                 is LoginSharedEvent.SavePhoneNumber -> {
                     viewModel.setLoading(false)
 
                     viewModel.saveNumber(event.number)
                 }
+
                 is LoginSharedEvent.SavedPhoneNumberSuccess -> {
                     viewModel.setLoading(false)
 
@@ -89,20 +96,33 @@ fun LoginScreen(navigator: NavHostController, viewModel: LoginSharedViewModel = 
                         // TODO(Show error.)
                     }
                 }
-                is LoginSharedEvent.Loading -> {
+
+                is BaseEvent.Loading -> {
                     viewModel.setLoading(true)
                 }
-                is LoginSharedEvent.Navigate -> {
+
+                is BaseEvent.Navigate -> {
                     viewModel.setLoading(false)
+
                     navigator.navigate(route = event.route)
                 }
+
                 is LoginSharedEvent.ToggleBottomSheet -> {
                     viewModel.setLoading(false)
 
                     if (!bottomSheetState.isVisible) bottomSheetState.show() else bottomSheetState.hide()
                 }
-                else -> {
-                    viewModel.setLoading(false)
+
+                is LoginSharedEvent.CodeChanged -> {
+
+                }
+
+                is BaseEvent.Error -> {
+                    Timber.tag("App.tag").i("LoginScreen: %s", event.message)
+                }
+
+                is BaseEvent.InternetConnection -> {
+                    Timber.tag("App.tag").i("InternetConnection: %s", event.isActive)
                 }
             }
         }
@@ -125,6 +145,7 @@ fun LoginScreen(navigator: NavHostController, viewModel: LoginSharedViewModel = 
                             footer = {}
                         )
                     }
+
                     BottomSheetScreenType.PrivacyPolicy -> {
                         CrewlSheetContent(
                             header = { PrivacyPolicyScreen.Header() },
@@ -132,23 +153,27 @@ fun LoginScreen(navigator: NavHostController, viewModel: LoginSharedViewModel = 
                             footer = {}
                         )
                     }
+
                     BottomSheetScreenType.CountryCode -> {
                         CrewlSheetContent(
                             header = { CountryCodeScreen.Header() },
-                            main = { CountryCodeScreen.Main(
-                                onItemSelected = {
-                                    viewModel.onCountryUpdated(country = it)
-                                    scope.launch {
-                                        bottomSheetState.hide()
+                            main = {
+                                CountryCodeScreen.Main(
+                                    onItemSelected = {
+                                        viewModel.onCountryUpdated(country = it)
+                                        scope.launch {
+                                            bottomSheetState.hide()
+                                        }
+                                    },
+                                    isKeyboardHidden = {
+                                        if (!it) keyboard?.show() else keyboard?.hide()
                                     }
-                                },
-                                isKeyboardHidden = {
-                                    if (!it) keyboard?.show() else keyboard?.hide()
-                                }
-                            )  },
+                                )
+                            },
                             footer = {}
                         )
                     }
+
                     BottomSheetScreenType.Empty -> {}
                 }
             }
@@ -203,6 +228,9 @@ fun LoginScreen(navigator: NavHostController, viewModel: LoginSharedViewModel = 
                         viewModel.onBottomSheetClicked(type = BottomSheetScreenType.PrivacyPolicy)
                     },
                     isLoading = state.isLoading,
+                    onBackPressed = {
+                        navigator.popBackStack()
+                    },
                     onNavigate = {
                         viewModel.onSavePhoneNumber()
                     }
@@ -237,29 +265,20 @@ private fun MainContent(
     val focusRequester = remember { FocusRequester() }
     val scope = rememberCoroutineScope()
 
-    DisposableEffect(Unit) {
+    LaunchedEffect(Unit) {
         scope.launch {
-            delay(0)
             focusRequester.requestFocus()
         }
-
-        onDispose {}
     }
 
     Row {
         Box(
             modifier = Modifier
                 .padding(top = 10.dp)
-                .background(White, Shapes.medium)
-                .clip(Shapes.medium)
+                .background(White, Shapes.small)
+                .clip(Shapes.small)
                 .border(1.dp, Gray25)
                 .wrapContentSize()
-                .animateContentSize(
-                    animationSpec = tween(
-                        durationMillis = 500,
-                        easing = LinearOutSlowInEasing
-                    )
-                )
         ) {
             if (countryCode.isEmpty())
                 CircularProgressIndicator(
@@ -341,6 +360,7 @@ private fun FooterContent(
     isKeyboardHidden: (Boolean) -> Unit,
     isPhoneNumberValid: Boolean,
     isLoading: Boolean,
+    onBackPressed: () -> Unit,
     onNavigate: () -> Unit
 ) {
     var isUserChecked by remember { mutableStateOf(false) }
@@ -367,9 +387,26 @@ private fun FooterContent(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            LongButton(text = stringResource(id = R.string.SEND_CODE), isActive = (isUserChecked && isPhoneNumberValid), isLoading = isLoading) {
-                onNavigate()
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                BackButton(onBackPressed = {
+                    onBackPressed.invoke()
+                })
+
+                Spacer(modifier = Modifier.width(10.dp))
+
+                LongButton(text = stringResource(id = R.string.SEND_CODE), isActive = (isUserChecked && isPhoneNumberValid && !isLoading), isLoading = isLoading) {
+                    onNavigate.invoke()
+                }
             }
+
+
         }
     }
+}
+
+@Composable
+@Preview
+fun PreviewLoginScreen() {
+    val navigator = rememberNavController()
+    LoginScreen(navigator = navigator)
 }

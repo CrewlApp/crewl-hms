@@ -12,5 +12,6 @@ data class LoginSharedState(
     val country: Country = Country(),
     val bottomSheetType: BottomSheetScreenType = BottomSheetScreenType.Empty,
     val query: String = "",
-    val countries: List<Country> = emptyList()
+    val countries: List<Country> = emptyList(),
+    val throwable: String = ""
 )

@@ -1,26 +1,31 @@
-package com.crewl.app.ui.feature.prehome
+package com.crewl.app.ui.feature.home
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.crewl.app.R
+import com.crewl.app.ui.feature.login.LoginSharedViewModel
+import com.crewl.app.ui.feature.prehome.PreHomeEvent
 import com.crewl.app.ui.router.Screen
-import com.crewl.app.ui.theme.*
+import com.crewl.app.ui.theme.Black
 import com.crewl.app.utils.rememberWindowInfo
 
 @Composable
-fun PreHomeScreen(navigator: NavHostController, viewModel: PreHomeViewModel = hiltViewModel()) {
+fun HomeScreen(navigator: NavHostController, viewModel: HomeViewModel = hiltViewModel()) {
     val context = LocalContext.current
 
     val windowInfo = rememberWindowInfo()
@@ -34,7 +39,7 @@ fun PreHomeScreen(navigator: NavHostController, viewModel: PreHomeViewModel = hi
                     navigator.navigate(Screen.LoginScreen.route)
                 }
                 is PreHomeEvent.NavigateRegister -> {
-                    navigator.navigate(Screen.RegisterScreen.route)
+                    navigator.navigate(Screen.OnboardingScreen.route)
                 }
             }
         }
@@ -60,11 +65,4 @@ fun PreHomeScreen(navigator: NavHostController, viewModel: PreHomeViewModel = hi
             )
         }
     }
-}
-
-@Composable
-@Preview
-fun PreHomePreview() {
-    val navigator = rememberNavController()
-    PreHomeScreen(navigator = navigator)
 }

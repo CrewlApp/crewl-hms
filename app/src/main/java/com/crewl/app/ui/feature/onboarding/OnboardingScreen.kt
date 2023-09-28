@@ -25,6 +25,8 @@ import com.crewl.app.ui.router.Screen
 import com.crewl.app.ui.theme.*
 import kotlinx.coroutines.launch
 
+// Todo: Refactor compose screens.
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnboardingScreen(navigator: NavHostController, viewModel: OnboardingViewModel) {
@@ -39,7 +41,7 @@ fun OnboardingScreen(navigator: NavHostController, viewModel: OnboardingViewMode
         viewModel.onboardingEvent.collect { event ->
             when (event) {
                 is OnboardingEvent.Navigate -> {
-                    navigator.navigate(route = Screen.PreHomeScreen.route)
+                    navigator.navigate(route = Screen.LoginScreen.route)
                 }
             }
         }

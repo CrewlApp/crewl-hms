@@ -6,6 +6,7 @@ plugins {
     id "com.google.devtools.ksp" version "1.8.0-1.0.9"
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -168,7 +169,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.9.1'
 
     /* Localized strings library. */
-    implementation 'com.github.crewl-app:localized-strings-android:1.0.1'
+    implementation 'com.github.crewl-app:localized-strings-android:1.0.2'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

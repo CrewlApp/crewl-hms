@@ -1,23 +1,38 @@
-/**
- * @author Kaan Fırat
- *
- * @since 1.0
- */
-
 package com.crewl.app.ui.component
 
-import androidx.compose.runtime.*
-import androidx.compose.animation.core.*
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.OnBackPressedDispatcher
+import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.VectorConverter
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -33,24 +48,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
-import com.crewl.app.R
 import com.crewl.app.framework.extension.gesturesDisabled
-import com.crewl.app.framework.extension.getString
-import com.crewl.app.ui.theme.*
+import com.crewl.app.ui.theme.Black
+import com.crewl.app.ui.theme.BrightGold
+import com.crewl.app.ui.theme.Shapes
+import com.crewl.app.ui.theme.SpaceGrotesk
+import com.crewl.app.ui.theme.White
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-
-enum class ButtonState {
-    Pressed, Idle
-}
+import kotlinx.coroutines.withContext
 
 @Composable
-fun LongButton(
-    fraction: Float = 1f,
-    foregroundColor: Color = BrightGold,
-    text: String = "",
+fun BackButton(
     isActive: Boolean = true,
-    isLoading: Boolean = false,
-    onButtonClick: () -> Unit = {}
+    onBackPressed: () -> Unit = {}
 ) {
     val buttonState by remember { mutableStateOf(ButtonState.Idle) }
     var targetOffset by remember { mutableStateOf(Offset(0f, 0f)) }
@@ -60,8 +71,8 @@ fun LongButton(
 
     Box(
         modifier = Modifier
-            .fillMaxWidth(fraction)
-            .height(55.dp)
+            .wrapContentWidth()
+            .height(33.dp)
             .alpha(
                 if (!isActive) 0.6f else 1f
             ),
@@ -69,10 +80,10 @@ fun LongButton(
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(height = 50.dp)
+                .wrapContentWidth()
+                .height(30.dp)
                 .zIndex(1.0f)
-                .padding(end = 5.dp)
+                .padding(end = 3.dp)
                 .gesturesDisabled(!isActive)
                 .pointerInput(buttonState) {
                     detectTapGestures(
@@ -83,8 +94,10 @@ fun LongButton(
                             tryAwaitRelease()
                             coroutineScope.launch {
                                 updatedOffset.animateTo(Offset(0f, 0f))
+                                withContext(Dispatchers.Main) {
+                                    onBackPressed.invoke()
+                                }
                             }
-                            onButtonClick.invoke()
                         }
                     )
                 }
@@ -92,52 +105,45 @@ fun LongButton(
                     this.translationX = updatedOffset.value.x
                     this.translationY = updatedOffset.value.y
                 }
-                .border(width = 2.dp, color = Black, shape = RoundedCornerShape(0.dp))
-                .background(foregroundColor, shape = RoundedCornerShape(0.dp))
+                .border(width = 1.5.dp, color = Black, shape = RoundedCornerShape(0.dp))
+                .background(White, shape = RoundedCornerShape(0.dp))
+                .padding(5.dp)
                 .align(Alignment.TopStart),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            if (!isLoading)
-                Text(
-                    modifier = Modifier
-                        .wrapContentWidth(),
-                    text = text,
-                    fontFamily = SpaceGrotesk,
-                    fontSize = 16.sp,
-                    color = Black,
-                    letterSpacing = -(0.15).sp,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center
-                )
-            else
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .padding(horizontal = 15.dp, vertical = 10.dp)
-                        .size(17.dp),
-                    color = Black,
-                    strokeWidth = 2.dp
-                )
+            Icon(
+                imageVector = Icons.Default.KeyboardArrowLeft,
+                contentDescription = "Back",
+                tint = Color.Black
+            )
         }
 
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(height = 50.dp)
+                .wrapContentWidth()
+                .height(30.dp)
                 .zIndex(0.0f)
-                .padding(start = 5.dp)
+                .padding(start = 3.dp)
                 .onGloballyPositioned {
                     val rect = it.boundsInParent()
                     targetOffset = rect.topLeft
                 }
                 .background(Black, shape = RoundedCornerShape(0.dp))
+                .padding(5.dp)
                 .align(Alignment.BottomEnd)
-        ) {}
+        ) {
+            Icon(
+                imageVector = Icons.Default.KeyboardArrowLeft,
+                contentDescription = "Back",
+                tint = Color.Black
+            )
+        }
     }
 }
 
 @Preview
 @Composable
-fun PreviewAnimatedButton() {
-    LongButton(text = getString(R.string.SEND_CODE))
+fun PreviewBackButton() {
+    BackButton()
 }

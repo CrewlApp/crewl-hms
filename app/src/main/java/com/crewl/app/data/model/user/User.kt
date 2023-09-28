@@ -1,11 +1,14 @@
 package com.crewl.app.data.model.user
 
+import com.google.type.LatLng
+
 data class User(
-    val phoneNumber: PhoneNumber?,
-    val name: String?,
-    val surname: String?,
-    val birthdate: String
+    val phoneNumber: PhoneNumber? = null,
+    val name: String? = null,
+    val surname: String? = null,
+    val birthdate: String? = null,
+    val coordinates: LatLng? = null,
+    val profilePicture: String? = null
 ) {
-    var fullName: String = "$name $surname"
-    var fullNumber: String = "${phoneNumber?.country?.code}${phoneNumber?.number}"
+    val fullName: String = "$name $surname"
 }

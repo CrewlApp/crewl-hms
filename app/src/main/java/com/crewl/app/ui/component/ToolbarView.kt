@@ -66,7 +66,7 @@ fun ToolbarView(
                 )
 
                 Text(
-                    text = descriptionStrings[1],
+                    text = descriptionStrings[1] ?: descriptionStrings[0],
                     style = MaterialTheme.typography.body1.copy(
                         fontFamily = Inter,
                         fontWeight = FontWeight.Normal,

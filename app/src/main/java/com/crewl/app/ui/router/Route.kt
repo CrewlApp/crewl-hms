@@ -3,7 +3,9 @@ package com.crewl.app.ui.router
 object Route {
     const val Splash = "splash"
     const val Onboarding = "onboarding"
-    const val PreHome = "prehome"
     const val Login = "login"
-    const val Authentication = "authentication/{phone}"
+    const val Authentication = "authentication"
+    const val PreRegister = "preRegister"
+    const val Register = "register"
+    const val Home = "home"
 }
