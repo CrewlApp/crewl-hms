@@ -1,0 +1,1222 @@
+[
+  {
+    "name": "Afghanistan",
+    "dialogCode": "+93",
+    "code": "AF"
+  },
+  {
+    "name": "Aland Islands",
+    "dialogCode": "+358",
+    "code": "AX"
+  },
+  {
+    "name": "Albania",
+    "dialogCode": "+355",
+    "code": "AL"
+  },
+  {
+    "name": "Algeria",
+    "dialogCode": "+213",
+    "code": "DZ"
+  },
+  {
+    "name": "American Samoa",
+    "dialogCode": "+1684",
+    "code": "AS"
+  },
+  {
+    "name": "Andorra",
+    "dialogCode": "+376",
+    "code": "AD"
+  },
+  {
+    "name": "Angola",
+    "dialogCode": "+244",
+    "code": "AO"
+  },
+  {
+    "name": "Anguilla",
+    "dialogCode": "+1264",
+    "code": "AI"
+  },
+  {
+    "name": "Antarctica",
+    "dialogCode": "+672",
+    "code": "AQ"
+  },
+  {
+    "name": "Antigua and Barbuda",
+    "dialogCode": "+1268",
+    "code": "AG"
+  },
+  {
+    "name": "Argentina",
+    "dialogCode": "+54",
+    "code": "AR"
+  },
+  {
+    "name": "Armenia",
+    "dialogCode": "+374",
+    "code": "AM"
+  },
+  {
+    "name": "Aruba",
+    "dialogCode": "+297",
+    "code": "AW"
+  },
+  {
+    "name": "Australia",
+    "dialogCode": "+61",
+    "code": "AU"
+  },
+  {
+    "name": "Austria",
+    "dialogCode": "+43",
+    "code": "AT"
+  },
+  {
+    "name": "Azerbaijan",
+    "dialogCode": "+994",
+    "code": "AZ"
+  },
+  {
+    "name": "Bahamas",
+    "dialogCode": "+1242",
+    "code": "BS"
+  },
+  {
+    "name": "Bahrain",
+    "dialogCode": "+973",
+    "code": "BH"
+  },
+  {
+    "name": "Bangladesh",
+    "dialogCode": "+880",
+    "code": "BD"
+  },
+  {
+    "name": "Barbados",
+    "dialogCode": "+1246",
+    "code": "BB"
+  },
+  {
+    "name": "Belarus",
+    "dialogCode": "+375",
+    "code": "BY"
+  },
+  {
+    "name": "Belgium",
+    "dialogCode": "+32",
+    "code": "BE"
+  },
+  {
+    "name": "Belize",
+    "dialogCode": "+501",
+    "code": "BZ"
+  },
+  {
+    "name": "Benin",
+    "dialogCode": "+229",
+    "code": "BJ"
+  },
+  {
+    "name": "Bermuda",
+    "dialogCode": "+1441",
+    "code": "BM"
+  },
+  {
+    "name": "Bhutan",
+    "dialogCode": "+975",
+    "code": "BT"
+  },
+  {
+    "name": "Bolivia, Plurinational State of",
+    "dialogCode": "+591",
+    "code": "BO"
+  },
+  {
+    "name": "Bosnia and Herzegovina",
+    "dialogCode": "+387",
+    "code": "BA"
+  },
+  {
+    "name": "Botswana",
+    "dialogCode": "+267",
+    "code": "BW"
+  },
+  {
+    "name": "Brazil",
+    "dialogCode": "+55",
+    "code": "BR"
+  },
+  {
+    "name": "British Indian Ocean Territory",
+    "dialogCode": "+246",
+    "code": "IO"
+  },
+  {
+    "name": "Brunei Darussalam",
+    "dialogCode": "+673",
+    "code": "BN"
+  },
+  {
+    "name": "Bulgaria",
+    "dialogCode": "+359",
+    "code": "BG"
+  },
+  {
+    "name": "Burkina Faso",
+    "dialogCode": "+226",
+    "code": "BF"
+  },
+  {
+    "name": "Burundi",
+    "dialogCode": "+257",
+    "code": "BI"
+  },
+  {
+    "name": "Cambodia",
+    "dialogCode": "+855",
+    "code": "KH"
+  },
+  {
+    "name": "Cameroon",
+    "dialogCode": "+237",
+    "code": "CM"
+  },
+  {
+    "name": "Canada",
+    "dialogCode": "+1",
+    "code": "CA"
+  },
+  {
+    "name": "Cape Verde",
+    "dialogCode": "+238",
+    "code": "CV"
+  },
+  {
+    "name": "Cayman Islands",
+    "dialogCode": "+1345",
+    "code": "KY"
+  },
+  {
+    "name": "Central African Republic",
+    "dialogCode": "+236",
+    "code": "CF"
+  },
+  {
+    "name": "Chad",
+    "dialogCode": "+235",
+    "code": "TD"
+  },
+  {
+    "name": "Chile",
+    "dialogCode": "+56",
+    "code": "CL"
+  },
+  {
+    "name": "China",
+    "dialogCode": "+86",
+    "code": "CN"
+  },
+  {
+    "name": "Christmas Island",
+    "dialogCode": "+61",
+    "code": "CX"
+  },
+  {
+    "name": "Cocos (Keeling) Islands",
+    "dialogCode": "+61",
+    "code": "CC"
+  },
+  {
+    "name": "Colombia",
+    "dialogCode": "+57",
+    "code": "CO"
+  },
+  {
+    "name": "Comoros",
+    "dialogCode": "+269",
+    "code": "KM"
+  },
+  {
+    "name": "Congo",
+    "dialogCode": "+242",
+    "code": "CG"
+  },
+  {
+    "name": "Congo, The Democratic Republic of the Congo",
+    "dialogCode": "+243",
+    "code": "CD"
+  },
+  {
+    "name": "Cook Islands",
+    "dialogCode": "+682",
+    "code": "CK"
+  },
+  {
+    "name": "Costa Rica",
+    "dialogCode": "+506",
+    "code": "CR"
+  },
+  {
+    "name": "Cote d'Ivoire",
+    "dialogCode": "+225",
+    "code": "CI"
+  },
+  {
+    "name": "Croatia",
+    "dialogCode": "+385",
+    "code": "HR"
+  },
+  {
+    "name": "Cuba",
+    "dialogCode": "+53",
+    "code": "CU"
+  },
+  {
+    "name": "Curacao",
+    "dialogCode": "+599",
+    "code": "CW"
+  },
+  {
+    "name": "Cyprus",
+    "dialogCode": "+357",
+    "code": "CY"
+  },
+  {
+    "name": "Czech Republic",
+    "dialogCode": "+420",
+    "code": "CZ"
+  },
+  {
+    "name": "Denmark",
+    "dialogCode": "+45",
+    "code": "DK"
+  },
+  {
+    "name": "Djibouti",
+    "dialogCode": "+253",
+    "code": "DJ"
+  },
+  {
+    "name": "Dominica",
+    "dialogCode": "+1767",
+    "code": "DM"
+  },
+  {
+    "name": "Dominican Republic",
+    "dialogCode": "+1",
+    "code": "DO"
+  },
+  {
+    "name": "Ecuador",
+    "dialogCode": "+593",
+    "code": "EC"
+  },
+  {
+    "name": "Egypt",
+    "dialogCode": "+20",
+    "code": "EG"
+  },
+  {
+    "name": "El Salvador",
+    "dialogCode": "+503",
+    "code": "SV"
+  },
+  {
+    "name": "Equatorial Guinea",
+    "dialogCode": "+240",
+    "code": "GQ"
+  },
+  {
+    "name": "Eritrea",
+    "dialogCode": "+291",
+    "code": "ER"
+  },
+  {
+    "name": "Estonia",
+    "dialogCode": "+372",
+    "code": "EE"
+  },
+  {
+    "name": "Ethiopia",
+    "dialogCode": "+251",
+    "code": "ET"
+  },
+  {
+    "name": "Falkland Islands (Malvinas)",
+    "dialogCode": "+500",
+    "code": "FK"
+  },
+  {
+    "name": "Faroe Islands",
+    "dialogCode": "+298",
+    "code": "FO"
+  },
+  {
+    "name": "Fiji",
+    "dialogCode": "+679",
+    "code": "FJ"
+  },
+  {
+    "name": "Finland",
+    "dialogCode": "+358",
+    "code": "FI"
+  },
+  {
+    "name": "France",
+    "dialogCode": "+33",
+    "code": "FR"
+  },
+  {
+    "name": "French Guiana",
+    "dialogCode": "+594",
+    "code": "GF"
+  },
+  {
+    "name": "French Polynesia",
+    "dialogCode": "+689",
+    "code": "PF"
+  },
+  {
+    "name": "Gabon",
+    "dialogCode": "+241",
+    "code": "GA"
+  },
+  {
+    "name": "Gambia",
+    "dialogCode": "+220",
+    "code": "GM"
+  },
+  {
+    "name": "Georgia",
+    "dialogCode": "+995",
+    "code": "GE"
+  },
+  {
+    "name": "Germany",
+    "dialogCode": "+49",
+    "code": "DE"
+  },
+  {
+    "name": "Ghana",
+    "dialogCode": "+233",
+    "code": "GH"
+  },
+  {
+    "name": "Gibraltar",
+    "dialogCode": "+350",
+    "code": "GI"
+  },
+  {
+    "name": "Greece",
+    "dialogCode": "+30",
+    "code": "GR"
+  },
+  {
+    "name": "Greenland",
+    "dialogCode": "+299",
+    "code": "GL"
+  },
+  {
+    "name": "Grenada",
+    "dialogCode": "+1473",
+    "code": "GD"
+  },
+  {
+    "name": "Guadeloupe",
+    "dialogCode": "+590",
+    "code": "GP"
+  },
+  {
+    "name": "Guam",
+    "dialogCode": "+1671",
+    "code": "GU"
+  },
+  {
+    "name": "Guatemala",
+    "dialogCode": "+502",
+    "code": "GT"
+  },
+  {
+    "name": "Guernsey",
+    "dialogCode": "+44",
+    "code": "GG"
+  },
+  {
+    "name": "Guinea",
+    "dialogCode": "+224",
+    "code": "GN"
+  },
+  {
+    "name": "Guinea-Bissau",
+    "dialogCode": "+245",
+    "code": "GW"
+  },
+  {
+    "name": "Guyana",
+    "dialogCode": "+592",
+    "code": "GY"
+  },
+  {
+    "name": "Haiti",
+    "dialogCode": "+509",
+    "code": "HT"
+  },
+  {
+    "name": "Holy See (Vatican City State)",
+    "dialogCode": "+379",
+    "code": "VA"
+  },
+  {
+    "name": "Honduras",
+    "dialogCode": "+504",
+    "code": "HN"
+  },
+  {
+    "name": "Hong Kong",
+    "dialogCode": "+852",
+    "code": "HK"
+  },
+  {
+    "name": "Hungary",
+    "dialogCode": "+36",
+    "code": "HU"
+  },
+  {
+    "name": "Iceland",
+    "dialogCode": "+354",
+    "code": "IS"
+  },
+  {
+    "name": "India",
+    "dialogCode": "+91",
+    "code": "IN"
+  },
+  {
+    "name": "Indonesia",
+    "dialogCode": "+62",
+    "code": "ID"
+  },
+  {
+    "name": "Iran",
+    "dialogCode": "+98",
+    "code": "IR"
+  },
+  {
+    "name": "Iraq",
+    "dialogCode": "+964",
+    "code": "IQ"
+  },
+  {
+    "name": "Ireland",
+    "dialogCode": "+353",
+    "code": "IE"
+  },
+  {
+    "name": "Isle of Man",
+    "dialogCode": "+44",
+    "code": "IM"
+  },
+  {
+    "name": "Israel",
+    "dialogCode": "+972",
+    "code": "IL"
+  },
+  {
+    "name": "Italy",
+    "dialogCode": "+39",
+    "code": "IT"
+  },
+  {
+    "name": "Jamaica",
+    "dialogCode": "+876",
+    "code": "JM"
+  },
+  {
+    "name": "Japan",
+    "dialogCode": "+81",
+    "code": "JP"
+  },
+  {
+    "name": "Jersey",
+    "dialogCode": "+44",
+    "code": "JE"
+  },
+  {
+    "name": "Jordan",
+    "dialogCode": "+962",
+    "code": "JO"
+  },
+  {
+    "name": "Kazakhstan",
+    "dialogCode": "+7",
+    "code": "KZ"
+  },
+  {
+    "name": "Kenya",
+    "dialogCode": "+254",
+    "code": "KE"
+  },
+  {
+    "name": "Kiribati",
+    "dialogCode": "+686",
+    "code": "KI"
+  },
+  {
+    "name": "Kosovo",
+    "dialogCode": "+383",
+    "code": "XK"
+  },
+  {
+    "name": "Kuwait",
+    "dialogCode": "+965",
+    "code": "KW"
+  },
+  {
+    "name": "Kyrgyzstan",
+    "dialogCode": "+996",
+    "code": "KG"
+  },
+  {
+    "name": "Laos",
+    "dialogCode": "+856",
+    "code": "LA"
+  },
+  {
+    "name": "Latvia",
+    "dialogCode": "+371",
+    "code": "LV"
+  },
+  {
+    "name": "Lebanon",
+    "dialogCode": "+961",
+    "code": "LB"
+  },
+  {
+    "name": "Lesotho",
+    "dialogCode": "+266",
+    "code": "LS"
+  },
+  {
+    "name": "Liberia",
+    "dialogCode": "+231",
+    "code": "LR"
+  },
+  {
+    "name": "Libyan Arab Jamahiriya",
+    "dialogCode": "+218",
+    "code": "LY"
+  },
+  {
+    "name": "Liechtenstein",
+    "dialogCode": "+423",
+    "code": "LI"
+  },
+  {
+    "name": "Lithuania",
+    "dialogCode": "+370",
+    "code": "LT"
+  },
+  {
+    "name": "Luxembourg",
+    "dialogCode": "+352",
+    "code": "LU"
+  },
+  {
+    "name": "Macao",
+    "dialogCode": "+853",
+    "code": "MO"
+  },
+  {
+    "name": "Macedonia",
+    "dialogCode": "+389",
+    "code": "MK"
+  },
+  {
+    "name": "Madagascar",
+    "dialogCode": "+261",
+    "code": "MG"
+  },
+  {
+    "name": "Malawi",
+    "dialogCode": "+265",
+    "code": "MW"
+  },
+  {
+    "name": "Malaysia",
+    "dialogCode": "+60",
+    "code": "MY"
+  },
+  {
+    "name": "Maldives",
+    "dialogCode": "+960",
+    "code": "MV"
+  },
+  {
+    "name": "Mali",
+    "dialogCode": "+223",
+    "code": "ML"
+  },
+  {
+    "name": "Malta",
+    "dialogCode": "+356",
+    "code": "MT"
+  },
+  {
+    "name": "Marshall Islands",
+    "dialogCode": "+692",
+    "code": "MH"
+  },
+  {
+    "name": "Martinique",
+    "dialogCode": "+596",
+    "code": "MQ"
+  },
+  {
+    "name": "Mauritania",
+    "dialogCode": "+222",
+    "code": "MR"
+  },
+  {
+    "name": "Mauritius",
+    "dialogCode": "+230",
+    "code": "MU"
+  },
+  {
+    "name": "Mayotte",
+    "dialogCode": "+262",
+    "code": "YT"
+  },
+  {
+    "name": "Mexico",
+    "dialogCode": "+52",
+    "code": "MX"
+  },
+  {
+    "name": "Micronesia, Federated States of Micronesia",
+    "dialogCode": "+691",
+    "code": "FM"
+  },
+  {
+    "name": "Moldova",
+    "dialogCode": "+373",
+    "code": "MD"
+  },
+  {
+    "name": "Monaco",
+    "dialogCode": "+377",
+    "code": "MC"
+  },
+  {
+    "name": "Mongolia",
+    "dialogCode": "+976",
+    "code": "MN"
+  },
+  {
+    "name": "Montenegro",
+    "dialogCode": "+382",
+    "code": "ME"
+  },
+  {
+    "name": "Montserrat",
+    "dialogCode": "+1664",
+    "code": "MS"
+  },
+  {
+    "name": "Morocco",
+    "dialogCode": "+212",
+    "code": "MA"
+  },
+  {
+    "name": "Mozambique",
+    "dialogCode": "+258",
+    "code": "MZ"
+  },
+  {
+    "name": "Myanmar",
+    "dialogCode": "+95",
+    "code": "MM"
+  },
+  {
+    "name": "Namibia",
+    "dialogCode": "+264",
+    "code": "NA"
+  },
+  {
+    "name": "Nauru",
+    "dialogCode": "+674",
+    "code": "NR"
+  },
+  {
+    "name": "Nepal",
+    "dialogCode": "+977",
+    "code": "NP"
+  },
+  {
+    "name": "Netherlands",
+    "dialogCode": "+31",
+    "code": "NL"
+  },
+  {
+    "name": "New Caledonia",
+    "dialogCode": "+687",
+    "code": "NC"
+  },
+  {
+    "name": "New Zealand",
+    "dialogCode": "+64",
+    "code": "NZ"
+  },
+  {
+    "name": "Nicaragua",
+    "dialogCode": "+505",
+    "code": "NI"
+  },
+  {
+    "name": "Niger",
+    "dialogCode": "+227",
+    "code": "NE"
+  },
+  {
+    "name": "Nigeria",
+    "dialogCode": "+234",
+    "code": "NG"
+  },
+  {
+    "name": "Niue",
+    "dialogCode": "+683",
+    "code": "NU"
+  },
+  {
+    "name": "Norfolk Island",
+    "dialogCode": "+672",
+    "code": "NF"
+  },
+  {
+    "name": "North Korea",
+    "dialogCode": "+850",
+    "code": "KP"
+  },
+  {
+    "name": "Northern Mariana Islands",
+    "dialogCode": "+1670",
+    "code": "MP"
+  },
+  {
+    "name": "Norway",
+    "dialogCode": "+47",
+    "code": "NO"
+  },
+  {
+    "name": "Oman",
+    "dialogCode": "+968",
+    "code": "OM"
+  },
+  {
+    "name": "Pakistan",
+    "dialogCode": "+92",
+    "code": "PK"
+  },
+  {
+    "name": "Palau",
+    "dialogCode": "+680",
+    "code": "PW"
+  },
+  {
+    "name": "Palestinian Territory, Occupied",
+    "dialogCode": "+970",
+    "code": "PS"
+  },
+  {
+    "name": "Panama",
+    "dialogCode": "+507",
+    "code": "PA"
+  },
+  {
+    "name": "Papua New Guinea",
+    "dialogCode": "+675",
+    "code": "PG"
+  },
+  {
+    "name": "Paraguay",
+    "dialogCode": "+595",
+    "code": "PY"
+  },
+  {
+    "name": "Peru",
+    "dialogCode": "+51",
+    "code": "PE"
+  },
+  {
+    "name": "Philippines",
+    "dialogCode": "+63",
+    "code": "PH"
+  },
+  {
+    "name": "Pitcairn",
+    "dialogCode": "+64",
+    "code": "PN"
+  },
+  {
+    "name": "Poland",
+    "dialogCode": "+48",
+    "code": "PL"
+  },
+  {
+    "name": "Portugal",
+    "dialogCode": "+351",
+    "code": "PT"
+  },
+  {
+    "name": "Puerto Rico",
+    "dialogCode": "+1",
+    "code": "PR"
+  },
+  {
+    "name": "Qatar",
+    "dialogCode": "+974",
+    "code": "QA"
+  },
+  {
+    "name": "Romania",
+    "dialogCode": "+40",
+    "code": "RO"
+  },
+  {
+    "name": "Russia",
+    "dialogCode": "+7",
+    "code": "RU"
+  },
+  {
+    "name": "Rwanda",
+    "dialogCode": "+250",
+    "code": "RW"
+  },
+  {
+    "name": "Reunion",
+    "dialogCode": "+262",
+    "code": "RE"
+  },
+  {
+    "name": "Saint Barthelemy",
+    "dialogCode": "+590",
+    "code": "BL"
+  },
+  {
+    "name": "Saint Helena, Ascension and Tristan Da Cunha",
+    "dialogCode": "+290",
+    "code": "SH"
+  },
+  {
+    "name": "Saint Kitts and Nevis",
+    "dialogCode": "+1869",
+    "code": "KN"
+  },
+  {
+    "name": "Saint Lucia",
+    "dialogCode": "+1758",
+    "code": "LC"
+  },
+  {
+    "name": "Saint Martin",
+    "dialogCode": "+590",
+    "code": "MF"
+  },
+  {
+    "name": "Saint Pierre and Miquelon",
+    "dialogCode": "+508",
+    "code": "PM"
+  },
+  {
+    "name": "Saint Vincent and the Grenadines",
+    "dialogCode": "+1784",
+    "code": "VC"
+  },
+  {
+    "name": "Samoa",
+    "dialogCode": "+685",
+    "code": "WS"
+  },
+  {
+    "name": "San Marino",
+    "dialogCode": "+378",
+    "code": "SM"
+  },
+  {
+    "name": "Sao Tome and Principe",
+    "dialogCode": "+239",
+    "code": "ST"
+  },
+  {
+    "name": "Saudi Arabia",
+    "dialogCode": "+966",
+    "code": "SA"
+  },
+  {
+    "name": "Senegal",
+    "dialogCode": "+221",
+    "code": "SN"
+  },
+  {
+    "name": "Serbia",
+    "dialogCode": "+381",
+    "code": "RS"
+  },
+  {
+    "name": "Seychelles",
+    "dialogCode": "+248",
+    "code": "SC"
+  },
+  {
+    "name": "Sierra Leone",
+    "dialogCode": "+232",
+    "code": "SL"
+  },
+  {
+    "name": "Singapore",
+    "dialogCode": "+65",
+    "code": "SG"
+  },
+  {
+    "name": "Sint Maarten",
+    "dialogCode": "+1721",
+    "code": "SX"
+  },
+  {
+    "name": "Slovakia",
+    "dialogCode": "+421",
+    "code": "SK"
+  },
+  {
+    "name": "Slovenia",
+    "dialogCode": "+386",
+    "code": "SI"
+  },
+  {
+    "name": "Solomon Islands",
+    "dialogCode": "+677",
+    "code": "SB"
+  },
+  {
+    "name": "Somalia",
+    "dialogCode": "+252",
+    "code": "SO"
+  },
+  {
+    "name": "South Africa",
+    "dialogCode": "+27",
+    "code": "ZA"
+  },
+  {
+    "name": "South Georgia and the South Sandwich Islands",
+    "dialogCode": "+500",
+    "code": "GS"
+  },
+  {
+    "name": "South Korea",
+    "dialogCode": "+82",
+    "code": "KR"
+  },
+  {
+    "name": "South Sudan",
+    "dialogCode": "+211",
+    "code": "SS"
+  },
+  {
+    "name": "Spain",
+    "dialogCode": "+34",
+    "code": "ES"
+  },
+  {
+    "name": "Sri Lanka",
+    "dialogCode": "+94",
+    "code": "LK"
+  },
+  {
+    "name": "Sudan",
+    "dialogCode": "+249",
+    "code": "SD"
+  },
+  {
+    "name": "Suriname",
+    "dialogCode": "+597",
+    "code": "SR"
+  },
+  {
+    "name": "Svalbard and Jan Mayen",
+    "dialogCode": "+47",
+    "code": "SJ"
+  },
+  {
+    "name": "Swaziland",
+    "dialogCode": "+268",
+    "code": "SZ"
+  },
+  {
+    "name": "Sweden",
+    "dialogCode": "+46",
+    "code": "SE"
+  },
+  {
+    "name": "Switzerland",
+    "dialogCode": "+41",
+    "code": "CH"
+  },
+  {
+    "name": "Syrian Arab Republic",
+    "dialogCode": "+963",
+    "code": "SY"
+  },
+  {
+    "name": "Taiwan",
+    "dialogCode": "+886",
+    "code": "TW"
+  },
+  {
+    "name": "Tajikistan",
+    "dialogCode": "+992",
+    "code": "TJ"
+  },
+  {
+    "name": "Tanzania, United Republic of Tanzania",
+    "dialogCode": "+255",
+    "code": "TZ"
+  },
+  {
+    "name": "Thailand",
+    "dialogCode": "+66",
+    "code": "TH"
+  },
+  {
+    "name": "Timor-Leste",
+    "dialogCode": "+670",
+    "code": "TL"
+  },
+  {
+    "name": "Togo",
+    "dialogCode": "+228",
+    "code": "TG"
+  },
+  {
+    "name": "Tokelau",
+    "dialogCode": "+690",
+    "code": "TK"
+  },
+  {
+    "name": "Tonga",
+    "dialogCode": "+676",
+    "code": "TO"
+  },
+  {
+    "name": "Trinidad and Tobago",
+    "dialogCode": "+1868",
+    "code": "TT"
+  },
+  {
+    "name": "Tunisia",
+    "dialogCode": "+216",
+    "code": "TN"
+  },
+  {
+    "name": "Turkey",
+    "dialogCode": "+90",
+    "code": "TR"
+  },
+  {
+    "name": "Turkmenistan",
+    "dialogCode": "+993",
+    "code": "TM"
+  },
+  {
+    "name": "Turks and Caicos Islands",
+    "dialogCode": "+1649",
+    "code": "TC"
+  },
+  {
+    "name": "Tuvalu",
+    "dialogCode": "+688",
+    "code": "TV"
+  },
+  {
+    "name": "Uganda",
+    "dialogCode": "+256",
+    "code": "UG"
+  },
+  {
+    "name": "Ukraine",
+    "dialogCode": "+380",
+    "code": "UA"
+  },
+  {
+    "name": "United Arab Emirates",
+    "dialogCode": "+971",
+    "code": "AE"
+  },
+  {
+    "name": "United Kingdom",
+    "dialogCode": "+44",
+    "code": "GB"
+  },
+  {
+    "name": "United States",
+    "dialogCode": "+1",
+    "code": "US"
+  },
+  {
+    "name": "Uruguay",
+    "dialogCode": "+598",
+    "code": "UY"
+  },
+  {
+    "name": "Uzbekistan",
+    "dialogCode": "+998",
+    "code": "UZ"
+  },
+  {
+    "name": "Vanuatu",
+    "dialogCode": "+678",
+    "code": "VU"
+  },
+  {
+    "name": "Venezuela, Bolivarian Republic of Venezuela",
+    "dialogCode": "+58",
+    "code": "VE"
+  },
+  {
+    "name": "Vietnam",
+    "dialogCode": "+84",
+    "code": "VN"
+  },
+  {
+    "name": "Virgin Islands, British",
+    "dialogCode": "+1284",
+    "code": "VG"
+  },
+  {
+    "name": "Virgin Islands, U.S.",
+    "dialogCode": "+1340",
+    "code": "VI"
+  },
+  {
+    "name": "Wallis and Futuna",
+    "dialogCode": "+681",
+    "code": "WF"
+  },
+  {
+    "name": "Yemen",
+    "dialogCode": "+967",
+    "code": "YE"
+  },
+  {
+    "name": "Zambia",
+    "dialogCode": "+260",
+    "code": "ZM"
+  },
+  {
+    "name": "Zimbabwe",
+    "dialogCode": "+263",
+    "code": "ZW"
+  }
+]

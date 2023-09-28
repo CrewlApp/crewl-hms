@@ -3,6 +3,7 @@ package com.crewl.app
 import android.content.Context
 import com.crewl.app.framework.app.AppInitializer
 import com.crewl.app.framework.app.CoreApplication
+import com.crewl.localized_strings_android.CrewlLocalization
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 
@@ -22,8 +23,12 @@ class CrewlApplication: CoreApplication() {
     override fun onCreate() {
         super.onCreate()
 
-        application = this
+        application = this@CrewlApplication
 
         initializer.initialize(application = this@CrewlApplication)
+
+        application?.let {
+            CrewlLocalization.init(it.applicationContext, listOf("tr", "en", "czh"))
+        }
     }
 }

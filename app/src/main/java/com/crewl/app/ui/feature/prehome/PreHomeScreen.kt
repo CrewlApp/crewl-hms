@@ -1,101 +1,70 @@
 package com.crewl.app.ui.feature.prehome
 
-import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.paint
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.crewl.app.R
-import com.crewl.app.ui.component.TextButton
+import com.crewl.app.ui.router.Screen
 import com.crewl.app.ui.theme.*
-import com.ramcosta.composedestinations.annotation.Destination
+import com.crewl.app.utils.rememberWindowInfo
 
-@OptIn(ExperimentalFoundationApi::class)
-@Destination
 @Composable
-fun PreHomeScreen(viewModel: PreHomeViewModel = hiltViewModel()) {
+fun PreHomeScreen(navigator: NavHostController, viewModel: PreHomeViewModel = hiltViewModel()) {
     val context = LocalContext.current
 
-    Column(modifier = Modifier.fillMaxSize()) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(0.8f),
-            verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Image(
-                modifier = Modifier
-                    .fillMaxSize(0.4f),
-                painter = painterResource(id = R.drawable.logo),
-                contentDescription = "Logo"
-            )
+    val windowInfo = rememberWindowInfo()
+    val screenWidth = windowInfo.screenWidth
+    val screenHeight = windowInfo.screenHeight
 
-            Spacer(modifier = Modifier.height(20.dp))
+    LaunchedEffect(key1 = context) {
+        viewModel.preHomeEvent.collect() { event ->
+            when (event) {
+                is PreHomeEvent.NavigateLogin -> {
+                    navigator.navigate(Screen.LoginScreen.route)
+                }
+                is PreHomeEvent.NavigateRegister -> {
+                    navigator.navigate(Screen.RegisterScreen.route)
+                }
+            }
         }
+    }
 
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .paint(painterResource(id = R.drawable.bg_prehome), contentScale = ContentScale.FillWidth)) {
         Column(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxSize()
                 .padding(horizontal = 20.dp)
-                .weight(0.4f),
-            verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally
+                .padding(bottom = (screenHeight * 0.25).dp),
+            verticalArrangement = Arrangement.Bottom, horizontalAlignment = Alignment.CenterHorizontally
         )
         {
-            TextButton(fraction = 0.80f, foregroundColor = White, text = stringResource(id = R.string.login_string))
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            TextButton(fraction = 0.80f, foregroundColor = BrightGold, text = stringResource(id = R.string.register_string))
-        }
-    }
-}
-
-@Composable
-fun MainSection() {
-
-}
-
-@Composable
-fun ButtonSection() {
-}
-
-@Preview
-@Composable
-fun PreviewPreHome() {
-    Column(modifier = Modifier.fillMaxSize()) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(0.8f),
-            verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Image(
+            CircularProgressIndicator(
                 modifier = Modifier
-                    .width(350.dp),
-                painter = painterResource(id = R.drawable.logo),
-                contentDescription = "Logo"
+                    .padding(horizontal = 15.dp, vertical = 10.dp)
+                    .size(25.dp),
+                color = Black,
+                strokeWidth = 2.dp
             )
         }
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(0.4f),
-            verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally
-        )
-        {
-            TextButton(fraction = 0.75f, foregroundColor = White)
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            TextButton(fraction = 0.75f, foregroundColor = BrightGold)
-        }
     }
+}
+
+@Composable
+@Preview
+fun PreHomePreview() {
+    val navigator = rememberNavController()
+    PreHomeScreen(navigator = navigator)
 }

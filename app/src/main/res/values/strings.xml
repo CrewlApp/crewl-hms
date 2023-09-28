@@ -24,5 +24,17 @@
     <string name="onboarding_description_third">Gittiğin barların özel içeceklerini dene ve Crewl üyeliğine özel indirimlerin tadını çıkar.</string>
     <string name="onboarding_description_fourth">Şimdi katıl ve hikayenin bir parçası ol. Seni aramızda görmek için sabırsızlanıyoruz.</string>
 
+    <!-- Login -->
+    <string name="login_header_title">Telefon numaran nedir?</string>
+    <string name="login_header_description">Crewl’da herkesin güvende olması için senin gerçek bir insan olduğunu doğrulamam gerekiyor.</string>
+    <string name="login_phone_number_placeholder">(5xx) xxx-xx-xx</string>
+    <string name="login_phone_number_supporting_text">Numaranı doğru girdiğinden emin ol. Sana bir SMS kodu yollayacağım.</string>
+    <string name="star_input">* </string>
+    <string name="privacy_policy">Gizlilik Politikası</string>
+    <string name="terms_of_service">Kullanım Koşulları</string>
+    <string name="send_verification_code">Onay Kodu Gönder</string>
+
+    <string name="phone_number">Telefon Numarası</string>
+
     <string name="app_exit_label">Çıkmak için tekrar GERİ tuşuna basın</string>
 </resources>

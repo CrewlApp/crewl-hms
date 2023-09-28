@@ -1,14 +1,16 @@
+/**
+ * @author Kaan Fırat
+ *
+ * @since 1.0
+ */
+
 package com.crewl.app.framework.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.crewl.app.framework.network.DataState
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
 import timber.log.Timber
 
 abstract class BaseViewModel: ViewModel() {
@@ -40,6 +42,20 @@ abstract class BaseViewModel: ViewModel() {
             }
     }
 
+    suspend fun <T : Any> call(IO: suspend () -> Flow<IOTaskResult<T>>) =
+        flow {
+            emit(ViewState.Loading(true))
+            IO().map {
+                when (it) {
+                    is IOTaskResult.OnSuccess -> ViewState.RenderSuccess(it.data)
+                    is IOTaskResult.OnFailed -> ViewState.RenderFailure(it.throwable)
+                }
+            }.collect {
+                emit(it)
+            }
+            emit(ViewState.Loading(false))
+        }.flowOn(Dispatchers.IO)
+
     protected suspend fun <T> execute(
         callFlow: Flow<DataState<T>>,
         completionHandler: (collect: T) -> Unit = {}
@@ -51,6 +67,7 @@ abstract class BaseViewModel: ViewModel() {
                 when (state) {
                     is DataState.Error -> handleError(state.error)
                     is DataState.Success -> completionHandler.invoke(state.result)
+                    is DataState.Loading -> {}
                 }
             }
     }

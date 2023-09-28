@@ -1,7 +1,7 @@
 package com.crewl.app.di
 
 import android.annotation.SuppressLint
-import com.crewl.app.data.repository.OnboardingRepository
+import com.crewl.app.data.repository.OnboardingRepositoryImpl
 import com.crewl.app.domain.usecase.onboarding.ReadOnboardingUseCase
 import com.crewl.app.domain.usecase.onboarding.SaveOnboardingUseCase
 import dagger.Module
@@ -16,9 +16,9 @@ import javax.inject.Singleton
 class OnboardingModule {
     @Singleton
     @Provides
-    fun provideSaveOnboardingUseCase(repository: OnboardingRepository): SaveOnboardingUseCase = SaveOnboardingUseCase(repository = repository)
+    fun provideSaveOnboardingUseCase(repository: OnboardingRepositoryImpl): SaveOnboardingUseCase = SaveOnboardingUseCase(repository = repository)
 
     @Singleton
     @Provides
-    fun provideReadOnboardingUseCase(repository: OnboardingRepository): ReadOnboardingUseCase = ReadOnboardingUseCase(repository = repository)
+    fun provideReadOnboardingUseCase(repository: OnboardingRepositoryImpl): ReadOnboardingUseCase = ReadOnboardingUseCase(repository = repository)
 }

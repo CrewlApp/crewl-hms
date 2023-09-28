@@ -25,7 +25,6 @@ class SplashViewModel @Inject constructor(private val readOnboardingUseCase: Rea
     val startOnboarding = _startOnboarding.asStateFlow()
 
     private val _isSplashScreenLoaded: MutableState<Boolean> = mutableStateOf(true)
-    val isSplashScreenLoaded = _isSplashScreenLoaded
 
     init {
         viewModelScope.launch {
