@@ -1,15 +1,16 @@
 /**
  * @author Kaan Fırat
- * @version 1.0, 29/01/23
+ *
+ * @since 1.0
  */
 
 package com.crewl.app.provider
 
-import android.content.Context
 import com.crewl.app.ui.provider.ResourceProvider
+import com.crewl.localized_strings_android.CrewlLocalization
 
-class AppResourceProvider(private val context: Context) : ResourceProvider {
+class AppResourceProvider : ResourceProvider {
     override fun getString(id: Int): String {
-        return context.getString(id)
+        return CrewlLocalization.getLocalizedString(id = id)
     }
 }

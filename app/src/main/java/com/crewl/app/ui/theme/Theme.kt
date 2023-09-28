@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 private val DarkColorPalette = darkColors(
     primary = SoftPeach,
     primaryVariant = SoftPeach,
-    onPrimary = White,
+    onPrimary = Black,
     secondary = Black,
     secondaryVariant = SoftPeach,
     onSecondary = Black,
@@ -35,7 +35,7 @@ private val LightColorPalette = lightColors(
     onBackground = SoftPeach,
 
     surface = Black,
-    onSurface = White
+    onSurface = Black
 )
 
 val CrewlColors: Colors
@@ -51,7 +51,7 @@ val CrewlTypography: Typography
 fun CrewlTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     val colors = if (darkTheme) DarkColorPalette else LightColorPalette
 
-    val typography = if (darkTheme) DarkTypography else LightTypography
+    val typography = CrewlTypography
 
     MaterialTheme(
         colors = colors,

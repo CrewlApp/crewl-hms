@@ -1,6 +1,7 @@
 /**
  * @author Kaan Fırat
- * @version 1.0, 29/01/23
+ *
+ * @since 1.0
  */
 
 package com.crewl.app.framework.extension
@@ -11,6 +12,7 @@ import android.text.Html
 import android.text.Spanned
 import com.crewl.app.CrewlApplication
 import com.crewl.app.R
+import com.crewl.localized_strings_android.CrewlLocalization
 import java.security.AccessController.getContext
 
 const val EMPTY = ""
@@ -59,5 +61,5 @@ fun String.clearTurkishChars(): String {
 }
 
 fun getString(id: Int): String {
-    return CrewlApplication.getContext()?.getString(id) ?: ""
+    return CrewlLocalization.getLocalizedString(id = id) ?: ""
 }

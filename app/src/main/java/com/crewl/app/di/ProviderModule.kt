@@ -1,6 +1,7 @@
 /**
  * @author Kaan Fırat
- * @version 1.0, 29/01/23
+ *
+ * @since 1.0
  */
 
 package com.crewl.app.di
@@ -29,7 +30,7 @@ class ProviderModule {
 
     @Provides
     @Singleton
-    fun provideAppResourceProvider(@ApplicationContext context: Context): ResourceProvider = AppResourceProvider(context)
+    fun provideAppResourceProvider(): ResourceProvider = AppResourceProvider()
 
     @Provides
     @Singleton

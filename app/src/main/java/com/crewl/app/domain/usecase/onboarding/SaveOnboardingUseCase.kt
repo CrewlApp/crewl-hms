@@ -1,8 +1,14 @@
+/**
+ * @author Kaan Fırat
+ *
+ * @since 1.0
+ */
+
 package com.crewl.app.domain.usecase.onboarding
 
 import androidx.annotation.VisibleForTesting
-import com.alis.framework.usecase.LocalUseCaseController
-import com.crewl.app.data.repository.OnboardingRepository
+import com.crewl.app.framework.usecase.LocalUseCaseController
+import com.crewl.app.domain.repository.OnboardingRepository
 import kotlinx.coroutines.flow.FlowCollector
 import javax.inject.Inject
 
