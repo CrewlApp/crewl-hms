@@ -16,13 +16,13 @@ jobs:
         - name: Checkout the code
           uses: actions/checkout@v2
 
-        - name: Set up JDK 11
+        - name: Set up JDK 18
           uses: actions/setup-java@v2
           with:
             distribution: 'adopt'
             java-version: '18'
           
-        - name: Run Lint
+        - name: Run lintDebug
           run: ./gradlew lintDebug
 
         - name: Upload HTML test report
