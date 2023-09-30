@@ -2,10 +2,7 @@ package com.crewl.app.di
 
 import android.annotation.SuppressLint
 import com.crewl.app.data.repository.LoginRepositoryImpl
-import com.crewl.app.domain.usecase.authentication.CheckUserUseCase
 import com.crewl.app.domain.usecase.login.SearchCountryUseCase
-import com.crewl.app.domain.usecase.authentication.SignInUseCase
-import com.crewl.app.domain.usecase.authentication.SignUpUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
